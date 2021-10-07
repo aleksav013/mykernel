@@ -111,14 +111,21 @@ void terminal_writestring(const char* data)
 {
     terminal_write(data, strlen(data));
 }
+
+char *rec;
+__attribute__ ((constructor)) void foo(void)
+{
+    rec="aleksa";
+}
  
 void kernel_main(void) 
 {
     terminal_initialize();
 
-    for(size_t i=0;i<80;i++)
+    for(size_t i=0;i<50;i++)
     {
 	for(size_t j=0;j<i;j++) terminal_writestring("#");
 	terminal_writestring("Hello, kernel World!\n");
     }
+    terminal_writestring(rec);
 }
