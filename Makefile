@@ -12,7 +12,7 @@ ISO_DIR=isodir
 
 TARGET=myos
 
-OBJ_FILES=boot.o kernel.o
+OBJ_FILES=boot.o kernel.o gdt.o
 CRTBEGIN_OBJ=$(shell $(CC) -print-file-name=crtbegin.o)
 CRTEND_OBJ=$(shell $(CC) -print-file-name=crtend.o)
 OBJ=$(BUILD_DIR)/crti.o $(CRTBEGIN_OBJ) $(patsubst %,$(BUILD_DIR)/%,$(OBJ_FILES)) $(CRTEND_OBJ) $(BUILD_DIR)/crtn.o
