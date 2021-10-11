@@ -12,33 +12,70 @@
 
 .global _start
 .global load_gdt
+.global load_idt
+.global enable_interrupts
+.global keyboard_handler
+.global ioport_in
+.global ioport_out
+
+.extern init_gdt_table
+.extern handle_keyboard_interrupt
+.extern kernel_main
 
 load_gdt:
     movl 4(%esp), %edx
     lgdt (%edx)
     ret
 
+load_idt:
+    movl 4(%esp), %edx
+    lidt (%edx)
+    sti
+    ret
+
+keyboard_handler:
+    pushal
+    cld
+    call handle_keyboard_interrupt
+    popal
+    iretl
+
+ioport_in:
+    movl 4(%esp),%edx
+    in %dx,%al
+    ret
+
+ioport_out:
+    movl 4(%esp),%edx
+    movl 8(%esp),%eax
+    outb %al,%dx
+    ret
+
+.set CODE_SEGMENT, 0x08
+.set DATA_SEGMENT, 0x10
+
 .section .bss
 .align 16
 stack_bottom:
-.skip 16384 # 16 KiB
+.skip 16384
 stack_top:
 
 .section .text
 .type _start, @function
 _start:
 	call init_gdt_table
-	mov 0x10, %ax
-	mov %ds, %ax
-	mov %es, %ax
-	mov %fs, %ax
-	mov %gs, %ax
-	mov %ss, %ax
-	mov $stack_top, %esp
+	ljmp $CODE_SEGMENT, $next
+	next:
+	movw $DATA_SEGMENT, %ax
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %fs
+	movw %ax, %gs
+	movw %ax, %ss
+	movl $stack_top, %esp
 	cli
 	call _init
 	call kernel_main
-1:	hlt
-	jmp 1b
+	hlt
  
 .size _start, . - _start
