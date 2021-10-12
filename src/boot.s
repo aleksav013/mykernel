@@ -64,8 +64,9 @@ stack_top:
 .type _start, @function
 _start:
 	call init_gdt_table
-	ljmp $CODE_SEGMENT, $next
-	next:
+	ljmp $CODE_SEGMENT, $code
+	
+code:
 	movw $DATA_SEGMENT, %ax
 	movw %ax, %ds
 	movw %ax, %es

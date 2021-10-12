@@ -2,7 +2,7 @@ ARCH=i686-elf
 
 CC=$(ARCH)-gcc
 AS=$(ARCH)-as
-CFLAGS=-ffreestanding -O2 -Wall -Wextra -ggdb
+CFLAGS=-ffreestanding -O2 -Wall -Wextra
 
 MKDIR=mkdir -p
 RM=rm -rf
@@ -15,7 +15,7 @@ ISO_DIR=isodir
 
 TARGET=myos
 
-OBJ_FILES=boot.o kernel.o gdt.o idt.o
+OBJ_FILES=boot.o kernel.o gdt.o idt.o keyboard.o vga.o string.o tty.o
 CRTBEGIN_OBJ=$(shell $(CC) -print-file-name=crtbegin.o)
 CRTEND_OBJ=$(shell $(CC) -print-file-name=crtend.o)
 OBJ=$(BUILD_DIR)/crti.o $(CRTBEGIN_OBJ) $(patsubst %,$(BUILD_DIR)/%,$(OBJ_FILES)) $(CRTEND_OBJ) $(BUILD_DIR)/crtn.o
