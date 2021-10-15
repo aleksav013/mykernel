@@ -15,14 +15,14 @@ ISO_DIR=isodir
 
 TARGET=myos
 
-OBJ_FILES=boot.o kernel.o gdt.o idt.o keyboard.o vga.o string.o tty.o
+OBJ_FILES=boot.o kernel.o gdt.o idt.o keyboard.o vga.o string.o tty.o stdio.o
 CRTBEGIN_OBJ=$(shell $(CC) -print-file-name=crtbegin.o)
 CRTEND_OBJ=$(shell $(CC) -print-file-name=crtend.o)
 OBJ=$(BUILD_DIR)/crti.o $(CRTBEGIN_OBJ) $(patsubst %,$(BUILD_DIR)/%,$(OBJ_FILES)) $(CRTEND_OBJ) $(BUILD_DIR)/crtn.o
 
 
 # Default action is set to making kernel binary
-.PHONY: all
+.PHONY: all run run-iso debug clean
 all: $(BUILD_DIR)/$(TARGET).bin
 
 # Creating iso file
@@ -48,22 +48,18 @@ $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c
 	$(CC) -c $< -o $@ -std=gnu99 $(CFLAGS)
 
 # Boot kernel binary in qemu
-.PHONY: run
 run: $(BUILD_DIR)/$(TARGET).bin
 	$(QEMU) -kernel $^
 
 # Boot iso in qemu
-.PHONY: run-iso
 run-iso: $(TARGET).iso
 	$(QEMU) -cdrom $^
 
 # Debug kernel binary in gdb
-.PHONY: debug
 debug: $(TARGET).bin
 	$(QEMU) -kernel $^ -s -S &
 	gdb -x .gdbinit
 
 # Clean build files
-.PHONY: clean
 clean:
 	$(RM) $(BUILD_DIR) $(ISO_DIR) $(TARGET).iso

@@ -2,6 +2,15 @@
 #include<stddef.h>
 #include<stdint.h>
 
+size_t stringlen(char *str)
+{
+    size_t i;
+    for(i=0;str[i]!='\0';i++) ;
+    i--;
+
+    return i;
+}
+
 bool stringcmp(char *str1,char *str2)
 {
     size_t i;
@@ -10,25 +19,40 @@ bool stringcmp(char *str1,char *str2)
     return 0;
 }
 
-size_t pieces(char pieces[15][15],char *buffer)
+void stringcat(char *str1,char *str2)
 {
-    for(size_t x=0;x<15;x++) for(size_t y=0;y<15;y++) pieces[x][y]='\0';
+    char *tmp=str1;
+    while(*tmp) tmp++;
+    while(*str2) *tmp++=*str2++;
+}
 
-    size_t i=0,j=0,r=0;
-    while(buffer[i]==' '&&buffer[i]!='\0') i++;
-    for(;buffer[i]!='\0';i++)
+void stringrev(char *str)
+{
+    size_t i=stringlen(str);
+
+    for(size_t j=0;j<i-j;j++)
     {
-	if(buffer[i]==' ')
-	{
-	    while(buffer[i]==' '&&buffer[i]!='\0') i++;
-	    j=0;
-	    r++;
-	    i--;
-	}
-	else
-	{
-	    pieces[r][j++]=buffer[i];
-	}
+	char tmp=str[i-j];
+	str[i-j]=str[j];
+	str[j]=tmp;
     }
-    return r+1;
+}
+
+void itos(char *str,uint32_t num)
+{
+    size_t i;
+    for(i=0;num>0;num/=10,i++) str[i]='0'+num%10;
+    str[i]='\0';
+    stringrev(str);
+}
+
+uint32_t stoi(char *str)
+{
+    uint32_t num=0;
+    for(size_t i=0;str[i]!='\0';i++)
+    {
+	num*=10;
+	num+=str[i]-'0';
+    }
+    return num;
 }

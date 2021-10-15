@@ -2,6 +2,7 @@
 #include<stddef.h>
 #include<stdint.h>
 #include"keyboard.h"
+#include"stdio.h"
 
 #define BUFFER_SIZE 200
 char buffer[BUFFER_SIZE];
@@ -18,10 +19,10 @@ size_t buffer_index=0;
 extern char ioport_in(uint8_t port);
 extern void ioport_out(uint8_t port, char data);
 
-void previous_field();
+void previous_field(void);
 void terminal_putchar(char c);
 void tty(char *buffer);
-void prompt();
+void prompt(void);
 
 void init_keyboard()
 {
@@ -35,7 +36,7 @@ void backspace()
     if(buffer_index<=0) return;
 
     previous_field();
-    terminal_putchar(' ');
+    printf(" ");
     previous_field();
     buffer[--buffer_index]='\0';
     return;
@@ -43,7 +44,7 @@ void backspace()
 
 void enter()
 {
-    terminal_putchar('\n');
+    printf("\n");
     if(buffer_index>0)
     {
 	tty(buffer);
@@ -71,7 +72,7 @@ void handle_keyboard_interrupt()
 	else
 	{
 	    buffer[buffer_index++]=keyboard[keycode];
-	    terminal_putchar(keyboard[keycode]);
+	    printf("%c",keyboard[keycode]);
 	}
 
     }
