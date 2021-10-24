@@ -1,6 +1,6 @@
-#include"types.h"
-#include"string.h"
-#include"stdio.h"
+#include"../include/types.h"
+#include"../include/string.h"
+#include"../include/stdio.h"
 
 #define CMD_LENGTH 20
 
@@ -48,7 +48,7 @@ void merge(char parts[][CMD_LENGTH])
 
 void ls(size_t numberof,char parts[][CMD_LENGTH])
 {
-    printf("filesystem not implemented yet\n");
+    printf("filesystem not implemented yet, %d,%s\n",numberof,parts[0]);
 }
 
 void number(size_t numberof,char parts[][CMD_LENGTH])

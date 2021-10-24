@@ -1,4 +1,4 @@
-#include"types.h"
+#include"../include/types.h"
 
 size_t stringlen(char *str)
 {

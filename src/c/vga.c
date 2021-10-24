@@ -1,6 +1,6 @@
-#include"types.h"
-#include"string.h"
-#include"asm.h"
+#include"../include/types.h"
+#include"../include/string.h"
+#include"../include/asm.h"
 
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;

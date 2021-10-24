@@ -1,12 +1,9 @@
-#include"heap.h"
-#include"stdio.h"
+#include"../include/heap.h"
 
 void terminal_initialize(void);
 void init_idt_table(void);
 void init_keyboard(void);
 void prompt(void);
-
-void *f();
 
 void kernel_main(void)
 {
