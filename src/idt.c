@@ -1,6 +1,4 @@
-#include<stdbool.h>
-#include<stddef.h>
-#include<stdint.h>
+#include"types.h"
 
 #define INTERRUPT_GATE_32 0x8e
 

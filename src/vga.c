@@ -1,12 +1,10 @@
-#include<stdbool.h>
-#include<stddef.h>
-#include<stdint.h>
+#include"types.h"
 #include"string.h"
+#include"asm.h"
+
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
 
-extern char ioport_in(uint8_t port);
-extern void ioport_out(uint8_t port, char data);
 
 enum vga_color {
     VGA_COLOR_BLACK = 0,
@@ -92,16 +90,26 @@ void terminal_putchar(char c)
     if (terminal_row==VGA_HEIGHT) movescreen();
 }
  
-void terminal_writestring(const char* data)
+void terminal_writestring(char* data)
 {
     for(int i=0;data[i]!='\0';i++) terminal_putchar(data[i]);
 }
 
-void terminal_writeint(const uint32_t num)
+void terminal_writeint(uint32_t num)
 {
     char string[100];
+    for(int i=0;i<100;i++) string[i]='\0';
     char *str=string;
-    itos(str,num);
+    itos(num,str);
+    terminal_writestring(str);
+}
+
+void terminal_writefloat(double num)
+{
+    char string[100];
+    for(int i=0;i<100;i++) string[i]='\0';
+    char *str=string;
+    ftos(num,str);
     terminal_writestring(str);
 }
 

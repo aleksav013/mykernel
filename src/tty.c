@@ -1,7 +1,4 @@
-#include<stdbool.h>
-#include<stddef.h>
-#include<stdint.h>
-
+#include"types.h"
 #include"string.h"
 #include"stdio.h"
 
@@ -51,19 +48,28 @@ void merge(char parts[][CMD_LENGTH])
 
 void ls(size_t numberof,char parts[][CMD_LENGTH])
 {
-    size_t i=numberof;
-    char *part=parts[0];
     printf("filesystem not implemented yet\n");
+}
+
+void number(size_t numberof,char parts[][CMD_LENGTH])
+{
+    if(numberof==1) printf("Please enter a number\n");
+    else
+    {
+	printf("number times two is %d\n",2*stoi(parts[1]));
+	printf("number times two is %f\n",2*stof(parts[1]));
+    }
 }
 
 void tty(char *buffer)
 {
     char parts[CMD_LENGTH][CMD_LENGTH];
     size_t numberof=pieces(parts,buffer);
+
     if(stringcmp(parts[0],"clear")) clear();
     else if(stringcmp(parts[0],"echo")) echo(numberof,parts);
     else if(stringcmp(parts[0],"merge")) merge(parts);
     else if(stringcmp(parts[0],"ls")) ls(numberof,parts);
-    else if(stringcmp(parts[0],"number")) printf("number times two is %d\n",stoi(parts[1])*2);
+    else if(stringcmp(parts[0],"number")) number(numberof,parts);
     else printf("command not found: %s\n",parts[0]);
 }

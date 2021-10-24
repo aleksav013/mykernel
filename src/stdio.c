@@ -1,12 +1,11 @@
-#include<stdbool.h>
-#include<stddef.h>
-#include<stdint.h>
-#include<stdarg.h>
+#include"types.h"
 #include"string.h"
+#include<stdarg.h>
 
 void terminal_putchar(char c);
-void terminal_writestring(const char* data);
-void terminal_writeint(const uint32_t data);
+void terminal_writestring(char* data);
+void terminal_writeint(uint32_t data);
+void terminal_writefloat(double num);
 
 void printf(char *str, ...)
 {
@@ -21,9 +20,10 @@ void printf(char *str, ...)
 	if(str[i]=='%')
 	{
 	    i++;
-	    if(str[i]=='c') terminal_putchar(va_arg(list,int));
+	    if(str[i]=='c') terminal_putchar((char)va_arg(list,int));
 	    else if(str[i]=='s') terminal_writestring(va_arg(list,char*));
 	    else if(str[i]=='d') terminal_writeint(va_arg(list,int));
+	    else if(str[i]=='f') terminal_writefloat(va_arg(list,double));
 	    else
 	    {
 		terminal_writestring("wrong format using print function\n");

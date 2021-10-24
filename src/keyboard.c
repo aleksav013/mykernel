@@ -1,7 +1,5 @@
-#include<stdbool.h>
-#include<stddef.h>
-#include<stdint.h>
-#include"keyboard.h"
+#include"types.h"
+#include"asm.h"
 #include"stdio.h"
 
 #define BUFFER_SIZE 200
@@ -16,19 +14,22 @@ size_t buffer_index=0;
 #define KEYBOARD_DATA_PORT 0x60
 #define KEYBOARD_STATUS_PORT 0x64
 
-extern char ioport_in(uint8_t port);
-extern void ioport_out(uint8_t port, char data);
-
 void previous_field(void);
 void terminal_putchar(char c);
 void tty(char *buffer);
 void prompt(void);
+void clear();
+void us_en(char keymap[]);
+
+char charcode[256];
+bool ispressed[128];
 
 void init_keyboard()
 {
     // 0xFD = 1111 1101 in binary. enables only IRQ1
     // Why IRQ1? Remember, IRQ0 exists, it's 0-based
     ioport_out(PIC1_DATA_PORT, 0xFD);
+    us_en(charcode);
 }
 
 void backspace()
@@ -55,24 +56,54 @@ void enter()
     return;
 }
 
+void space()
+{
+    buffer[buffer_index++]=' ';
+    printf(" ");
+}
+#define lshift ispressed[0x2A]
+#define lctrl ispressed[0x1D]
+
 void handle_keyboard_interrupt()
 {
-    // Write end of interrupt (EOI)
     ioport_out(PIC1_COMMAND_PORT, 0x20);
-    unsigned char status = ioport_in(KEYBOARD_STATUS_PORT);
+    uint8_t status = ioport_in(KEYBOARD_STATUS_PORT);
 
-    // Lowest bit of status will be set if buffer not empty
     if (status & 0x1)
     {
-	int16_t keycode = ioport_in(KEYBOARD_DATA_PORT);
-	if (keycode < 0 || keycode >= 128) return;
-
-	if(keycode==14) backspace();
-	else if(keycode==28) enter();
+	uint8_t keycode = ioport_in(KEYBOARD_DATA_PORT);
+	if(keycode<0x80)
+	{
+	    ispressed[keycode]=1;
+	    if(keycode==0x0E) backspace();
+	    else if(keycode==0x1C) enter();
+	    else if(keycode==0x39) space();
+	    else
+	    {
+		char c=charcode[keycode];
+		if(c!=' ')
+		{
+		    if(lshift)
+		    {
+			if(c>='a'&&c<='z') c-=32;
+		    }
+		    if(lctrl)
+		    {
+			if(c=='l')
+			{
+			    clear();
+			    prompt();
+			    return;
+			}
+		    }
+		    buffer[buffer_index++]=c;
+		    printf("%c",c);
+		}
+	    }
+	}
 	else
 	{
-	    buffer[buffer_index++]=keyboard[keycode];
-	    printf("%c",keyboard[keycode]);
+	    ispressed[keycode-0x80]=0;
 	}
 
     }
