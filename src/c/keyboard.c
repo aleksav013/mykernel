@@ -17,7 +17,6 @@ size_t buffer_index=0;
 void previous_field(void);
 void terminal_putchar(char c);
 void tty(char *buffer);
-void prompt(void);
 void clear();
 void us_en(char keymap[]);
 
@@ -26,9 +25,6 @@ bool ispressed[128];
 
 void init_keyboard()
 {
-    // 0xFD = 1111 1101 in binary. enables only IRQ1
-    // Why IRQ1? Remember, IRQ0 exists, it's 0-based
-    ioport_out(PIC1_DATA_PORT, 0xFD);
     us_en(charcode);
 }
 
@@ -52,7 +48,6 @@ void enter()
 	for(int i=0;i<BUFFER_SIZE;i++) buffer[i]='\0';
 	buffer_index=0;
     }
-    prompt();
     return;
 }
 
@@ -64,7 +59,7 @@ void space()
 #define lshift ispressed[0x2A]
 #define lctrl ispressed[0x1D]
 
-void handle_keyboard_interrupt()
+void keyboard_handler()
 {
     ioport_out(PIC1_COMMAND_PORT, 0x20);
     uint8_t status = ioport_in(KEYBOARD_STATUS_PORT);

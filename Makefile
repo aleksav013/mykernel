@@ -2,7 +2,7 @@ ARCH=i686-elf
 
 export CC=$(ARCH)-gcc
 export AS=$(ARCH)-as
-export CFLAGS=-ffreestanding -O2 -Wall -Wextra
+export CFLAGS=-ffreestanding -O2 -Wall -Wextra -fstack-protector-all
 
 MKDIR=mkdir -p
 RM=rm -rf
@@ -21,8 +21,8 @@ ISO=$(TARGET).iso
 
 CRTI_SOURCE=crti.s
 CRTN_SOURCE=crtn.s
-AS_SOURCE=boot.s
-C_SOURCES=gdt.c heap.c idt.c kernel.c keyboard.c keymap.c stdio.c string.c tty.c vga.c
+AS_SOURCE=boot.s irq.s
+C_SOURCES=gdt.c heap.c idt.c kernel.c keyboard.c keymap.c stdio.c string.c tty.c vga.c irq_handler.c stack_protector.c timer.c
 
 C_SOURCE_FILES=$(patsubst %,$(C_SOURCE_DIR)/%,$(C_SOURCES))
 export C_OBJECTS=$(patsubst %,$(BUILD_DIR)/%,$(C_SOURCES:c=o))

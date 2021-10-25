@@ -19,7 +19,7 @@ struct gdt_pointer
 // asm function
 extern void load_gdt(struct gdt_pointer *gdtp);
 
-struct gdt_entry gdt[3];
+struct gdt_entry gdt[5];
 struct gdt_pointer gdtp;
 
 void init_gdt_entry(size_t num, uint32_t limit, uint32_t base, uint8_t access, uint8_t limit_flags)
@@ -37,12 +37,11 @@ void init_gdt_table()
     gdtp.size=sizeof(gdt)-1;
     gdtp.offset=(uint32_t)&gdt;
 
-    //null
-    init_gdt_entry(0,0,0,0,0);
-    //code
-    init_gdt_entry(1,0xffffffff,0,0b10011010,0b11001111);
-    //data
-    init_gdt_entry(2,0xffffffff,0,0b10010010,0b11001111);
+    init_gdt_entry(0,0,0,0,0);					// null segment
+    init_gdt_entry(1,0xffffffff,0,0b10011010,0b11001111);	// code segment
+    init_gdt_entry(2,0xffffffff,0,0b10010010,0b11001111);	// data segment
+    init_gdt_entry(3,0xffffffff,0,0b11111010,0b11001111);	// user mode code segment
+    init_gdt_entry(4,0xffffffff,0,0b11110010,0b11001111);	// user mode data segment
 
     load_gdt(&gdtp);
 }

@@ -14,13 +14,8 @@
 .global load_gdt
 .global load_idt
 .global enable_interrupts
-.global keyboard_handler
 .global ioport_in
 .global ioport_out
-
-.extern init_gdt_table
-.extern handle_keyboard_interrupt
-.extern kernel_main
 
 load_gdt:
     movl 4(%esp), %edx
@@ -32,13 +27,6 @@ load_idt:
     lidt (%edx)
     sti
     ret
-
-keyboard_handler:
-    pushal
-    cld
-    call handle_keyboard_interrupt
-    popal
-    iretl
 
 ioport_in:
     movl 4(%esp),%edx

@@ -3,6 +3,7 @@
 void terminal_initialize(void);
 void init_idt_table(void);
 void init_keyboard(void);
+void init_timer(uint32_t frequency);
 void prompt(void);
 
 void kernel_main(void)
@@ -10,8 +11,10 @@ void kernel_main(void)
     terminal_initialize();
     init_idt_table();
     init_keyboard();
-    k_heapBMInit(&kheap);
-
+    init_timer(50);
+    //k_heapBMInit(&kheap);
+    //k_heapBMAddBlock(&kheap, 0x100000, 0x100000, 16);
     prompt();
+
     while(1) __asm__("hlt\n\t");
 }

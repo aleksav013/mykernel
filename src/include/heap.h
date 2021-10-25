@@ -1,3 +1,6 @@
+#ifndef HEAP_H
+#define HEAP_H
+
 #include"types.h"
 
 typedef struct _KHEAPBLOCKBM {
@@ -21,3 +24,5 @@ extern KHEAPBM kheap;
 
 #define kmalloc k_heapBMAlloc
 #define kfree k_heapBMFree
+
+#endif

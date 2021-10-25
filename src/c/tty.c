@@ -1,10 +1,12 @@
 #include"../include/types.h"
 #include"../include/string.h"
 #include"../include/stdio.h"
+#include"../include/vga.h"
 
 #define CMD_LENGTH 20
 
 void clear();
+extern uint32_t time;
 
 size_t pieces(char pieces[][CMD_LENGTH],char *buffer)
 {
@@ -61,6 +63,33 @@ void number(size_t numberof,char parts[][CMD_LENGTH])
     }
 }
 
+void uptime()
+{
+    printf("System uptime is: %d seconds\n",time);
+}
+
+void prompt()
+{
+    printf("[user@myos] > ");
+}
+
+void neofetch()
+{
+    set_color(VGA_COLOR_RED,VGA_COLOR_BLACK);
+    printf("   <*>\n");
+    printf("   <*>\n");
+    printf("   <*>\n");
+    printf("   <*>\n");
+    printf("   <*>\n");
+    printf("   <*>\n");
+    printf("   <*>\n");
+    printf("<*******>\n");
+    printf("  <***>\n");
+    printf("   <*>\n");
+    set_color(VGA_COLOR_LIGHT_GREY,VGA_COLOR_BLACK);
+    uptime();
+}
+
 void tty(char *buffer)
 {
     char parts[CMD_LENGTH][CMD_LENGTH];
@@ -71,5 +100,8 @@ void tty(char *buffer)
     else if(stringcmp(parts[0],"merge")) merge(parts);
     else if(stringcmp(parts[0],"ls")) ls(numberof,parts);
     else if(stringcmp(parts[0],"number")) number(numberof,parts);
+    else if(stringcmp(parts[0],"uptime")) uptime();
+    else if(stringcmp(parts[0],"neofetch")) neofetch();
     else printf("command not found: %s\n",parts[0]);
+    prompt();
 }
