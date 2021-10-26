@@ -5,8 +5,8 @@ void us_en(char keymap[])
     keymap[0x03]='2';		//2 pressed
     keymap[0x04]='3';		//3 pressed
     keymap[0x05]='4';		//4 pressed
-    keymap[0x06]='4';		//5 pressed
-    keymap[0x07]='5';		//6 pressed
+    keymap[0x06]='5';		//5 pressed
+    keymap[0x07]='6';		//6 pressed
     keymap[0x08]='7';		//7 pressed
     keymap[0x09]='8';		//8 pressed
     keymap[0x0A]='9';		//9 pressed

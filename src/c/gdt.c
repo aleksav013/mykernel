@@ -16,7 +16,6 @@ struct gdt_pointer
     uint32_t offset;
 } __attribute__((packed));
 
-// asm function
 extern void load_gdt(struct gdt_pointer *gdtp);
 
 struct gdt_entry gdt[5];

@@ -17,6 +17,7 @@ size_t buffer_index=0;
 void previous_field(void);
 void terminal_putchar(char c);
 void tty(char *buffer);
+void prompt(void);
 void clear();
 void us_en(char keymap[]);
 
@@ -48,6 +49,7 @@ void enter()
 	for(int i=0;i<BUFFER_SIZE;i++) buffer[i]='\0';
 	buffer_index=0;
     }
+    prompt();
     return;
 }
 
@@ -88,6 +90,7 @@ void keyboard_handler()
 			{
 			    clear();
 			    prompt();
+			    printf("%s",buffer);
 			    return;
 			}
 		    }
@@ -100,6 +103,5 @@ void keyboard_handler()
 	{
 	    ispressed[keycode-0x80]=0;
 	}
-
     }
 }

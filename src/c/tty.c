@@ -48,9 +48,9 @@ void merge(char parts[][CMD_LENGTH])
     printf("%s\n",str1);
 }
 
-void ls(size_t numberof,char parts[][CMD_LENGTH])
+void ls()
 {
-    printf("filesystem not implemented yet, %d,%s\n",numberof,parts[0]);
+    printf("Filesystem not implemented yet\n");
 }
 
 void number(size_t numberof,char parts[][CMD_LENGTH])
@@ -58,8 +58,8 @@ void number(size_t numberof,char parts[][CMD_LENGTH])
     if(numberof==1) printf("Please enter a number\n");
     else
     {
-	printf("number times two is %d\n",2*stoi(parts[1]));
-	printf("number times two is %f\n",2*stof(parts[1]));
+	printf("Entered integer number is %d\n",stoi(parts[1]));
+	printf("Entered float number is: %f\n",stof(parts[1]));
     }
 }
 
@@ -70,24 +70,61 @@ void uptime()
 
 void prompt()
 {
-    printf("[user@myos] > ");
+    //printf("[user@myos]$ ");
+    set_color(VGA_COLOR_RED,VGA_COLOR_BLACK);
+    printf("[");
+    set_color(VGA_COLOR_YELLOW,VGA_COLOR_BLACK);
+    printf("user");
+    set_color(VGA_COLOR_GREEN,VGA_COLOR_BLACK);
+    printf("@");
+    set_color(VGA_COLOR_BLUE,VGA_COLOR_BLACK);
+    printf("myos");
+    set_color(VGA_COLOR_RED,VGA_COLOR_BLACK);
+    printf("]");
+    set_color(VGA_COLOR_LIGHT_GREY,VGA_COLOR_BLACK);
+    printf("$ ");
 }
 
 void neofetch()
 {
-    set_color(VGA_COLOR_RED,VGA_COLOR_BLACK);
-    printf("   <*>\n");
-    printf("   <*>\n");
-    printf("   <*>\n");
-    printf("   <*>\n");
-    printf("   <*>\n");
-    printf("   <*>\n");
-    printf("   <*>\n");
-    printf("<*******>\n");
-    printf("  <***>\n");
-    printf("   <*>\n");
+    set_color(VGA_COLOR_WHITE,VGA_COLOR_BLACK);
+    printf("      .                ");			printf("Dobrodosli u moj     \n");
+    printf("     J:L    (\"\"\")      ");		printf("operativni sistem :) \n");
+    printf("     |:|     III       ");			printf("Uzivajte!            \n");
+    printf("     |:|     III       ");			printf("                     \n");
+    printf("     |:|     III       ");			printf("Welcome to my        \n");
+    printf("     |:|   __III__     ");			printf("operating system :)  \n");
+    printf("     |:| /:-.___,-:\\   ");			printf("Enjoy your stay!     \n");
+    printf("     |:| \\]  |:|  [/   ");			printf("                     \n");
+    printf("     |:|     |:|       ");			printf("                     \n");
+    printf("     |:|     |:|       ");			printf("                     \n");
+    printf("     |:|     |:|       ");			printf("                     \n");
+    printf(" /]  |:|  [\\ |:|       ");			printf("                     \n");
+    printf(" \\:-'\"\"\"`-:/ |:|       ");		printf("                     \n");
+    printf("   \"\"III\"\"   |:|       ");		printf("                     \n");
+    printf("     III     |:|       ");			printf("                     \n");
+    printf("     III     |:|       ");			printf("                     \n");
+    printf("     III     |:|       ");			printf("napravio/made by:    \n");
+    printf("    (___)    J:F       ");			printf("Aleksa Vuckovic      \n");
+    printf("              \"        ");			printf("                     \n");
+
+    for(size_t i=0;i<16;i++)
+    {
+	if(i==0) set_color(i,VGA_COLOR_WHITE);
+	else set_color(i,VGA_COLOR_BLACK);
+	printf("@%d ",i);
+    }
+    printf("\n");
+
+
     set_color(VGA_COLOR_LIGHT_GREY,VGA_COLOR_BLACK);
     uptime();
+}
+
+void help()
+{
+    printf("Currently available commands:\n");
+    printf("clear echo merge ls number uptime neofetch help\n");
 }
 
 void tty(char *buffer)
@@ -98,10 +135,10 @@ void tty(char *buffer)
     if(stringcmp(parts[0],"clear")) clear();
     else if(stringcmp(parts[0],"echo")) echo(numberof,parts);
     else if(stringcmp(parts[0],"merge")) merge(parts);
-    else if(stringcmp(parts[0],"ls")) ls(numberof,parts);
+    else if(stringcmp(parts[0],"ls")) ls();
     else if(stringcmp(parts[0],"number")) number(numberof,parts);
     else if(stringcmp(parts[0],"uptime")) uptime();
     else if(stringcmp(parts[0],"neofetch")) neofetch();
+    else if(stringcmp(parts[0],"help")) help();
     else printf("command not found: %s\n",parts[0]);
-    prompt();
 }
