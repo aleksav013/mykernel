@@ -110,9 +110,8 @@ void neofetch()
 
     for(size_t i=0;i<16;i++)
     {
-	if(i==0) set_color(i,VGA_COLOR_WHITE);
-	else set_color(i,VGA_COLOR_BLACK);
-	printf("@%d ",i);
+	set_color(0,i);
+	printf("  ",i);
     }
     printf("\n");
 

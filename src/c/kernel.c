@@ -5,10 +5,12 @@ void init_idt_table(void);
 void init_keyboard(void);
 void init_timer(uint32_t frequency);
 void prompt(void);
+void set_paging();
 
 void kernel_main(void)
 {
     terminal_initialize();
+    set_paging();
     init_idt_table();
     init_keyboard();
     init_timer(50);
