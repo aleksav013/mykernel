@@ -8,6 +8,7 @@ MKDIR=mkdir -p
 RM=rm -rf
 CP=cp
 QEMU=qemu-system-x86_64
+#QEMU_DEBUG=-d int -D qemu.log
 
 SOURCE_DIR=src
 BUILD_DIR=${CURDIR}/build
@@ -64,7 +65,7 @@ $(ISO): $(BINARY)
 	grub-mkrescue -o $(ISO) $(ISO_DIR)
 
 run: compile
-	$(QEMU) -kernel $(BINARY)
+	$(QEMU) -kernel $(BINARY) $(QEMU_DEBUG)
 
 run-iso: compile $(ISO)
 	$(QEMU) -cdrom $(ISO)

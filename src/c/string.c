@@ -94,7 +94,7 @@ double stof(const char *str)
     return num/pow;
 }
 
-const int decimals=7;
+const size_t decimals=7;
 void ftos(double num, char *str)
 {
     itos((uint32_t)num,str);

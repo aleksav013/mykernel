@@ -18,34 +18,29 @@ void set_pd()
     }
 }
 
-uint32_t first_page_table[1024] __attribute__((aligned(4096)));
+uint32_t page_table[1024][1024] __attribute__((aligned(4096)));
 
-void set_pt()
+void set_pt(size_t num,uint32_t address)
 {
     // holds the physical address where we want to start mapping these pages to.
     // in this case, we want to map these pages to the very beginning of memory.
-    unsigned int i;
      
     //we will fill all 1024 entries in the table, mapping 4 megabytes
-    for(i = 0; i < 1024; i++)
+    for(size_t i=0;i<1024;i++)
     {
 	// As the address is page aligned, it will always leave 12 bits zeroed.
 	// Those bits are used by the attributes ;)
-	first_page_table[i] = (i * 0x1000) | 3; // attributes: supervisor level, read/write, present.
+	page_table[num][i] = (address + i * 0x1000) | 3; // attributes: supervisor level, read/write, present.
     }
-}
 
-void put_pt()
-{
+    page_directory[num] = ((uint32_t)page_table[num]) | 3;
     // attributes: supervisor level, read/write, present
-    page_directory[0] = ((uint32_t)first_page_table) | 3;
 }
 
 void set_paging()
 {
     set_pd();
-    set_pt();
-    put_pt();
+    for(size_t i=0;i<1024;i++) set_pt(i,0x00400000 * i); // all 4GB mapped
     loadPageDirectory(page_directory);
     enablePaging();
 }

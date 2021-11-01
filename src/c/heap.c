@@ -1,9 +1,5 @@
 #include"../include/types.h"
 
-/*
-    2014 Leonard Kevin McGuire Jr (www.kmcg3413.net) (kmcg3413@gmail.com)
-    2016 Clément Gallet (provided bug fixes)
-*/
 typedef struct _KHEAPBLOCKBM {
 	struct _KHEAPBLOCKBM	                *next;
 	uint32_t				size;
@@ -61,7 +57,7 @@ static uint8_t k_heapBMGetNID(uint8_t a, uint8_t b) {
 }
  
 void *k_heapBMAlloc(KHEAPBM *heap, uint32_t size) {
-	KHEAPBLOCKBM		*b;
+	KHEAPBLOCKBM			*b;
 	uint8_t				*bm;
 	uint32_t			bcnt;
 	uint32_t			x, y, z;
@@ -70,14 +66,16 @@ void *k_heapBMAlloc(KHEAPBM *heap, uint32_t size) {
  
 	/* iterate blocks */
 	for (b = heap->fblock; b; b = b->next) {
+	    //printf("size:%d,used:%d,bsize:%d,lfb:%d\n",b->size,b->used,b->bsize,b->lfb);
 		/* check if block has enough room */
 		if (b->size - (b->used * b->bsize) >= size) {
  
 			bcnt = b->size / b->bsize;		
 			bneed = (size / b->bsize) * b->bsize < size ? size / b->bsize + 1 : size / b->bsize;
 			bm = (uint8_t*)&b[1];
+			//printf("bcnt:%d,bneed:%d,bm:%d\n",bcnt,bneed,bm);
  
-			for (x = (b->lfb + 1 >= bcnt ? 0 : b->lfb + 1); x < b->lfb; ++x) {
+			for (x = (b->lfb + 1 >= bcnt ? 0 : b->lfb + 1); x != b->lfb; ++x) {
 				/* just wrap around */
 				if (x >= bcnt) {
 					x = 0;
@@ -150,18 +148,22 @@ void k_heapBMFree(KHEAPBM *heap, void *ptr) {
 	return;
 }
 
-KHEAPBM     kheap;
+KHEAPBM kheap;
 
-void heap()
+void kheapinit()
 {
-    KHEAPBM     kheap;
-    char        *ptr;
+    k_heapBMInit(&kheap);
+}
+int kheapaddblock(uintptr_t addr,uint32_t size,uint32_t bsize)
+{
+    return k_heapBMAddBlock(&kheap,addr,size,bsize);
+}
+void *kmalloc(uint32_t size)
+{
+    return k_heapBMAlloc(&kheap,size);
 
-    k_heapBMInit(&kheap);                              /* initialize the heap */
-    k_heapBMAddBlock(&kheap, 0x100000, 0x100000, 16);  /* add block to heap 
-							(starting 1MB mark and length of 1MB) 
-						       with default block size of 16 bytes
-						       */
-    ptr = (char*)k_heapBMAlloc(&kheap, 256);           /* allocate 256 bytes (malloc) */
-    k_heapBMFree(&kheap, ptr);                         /* free the pointer (free) */
+}
+void kfree(void *ptr)
+{
+    k_heapBMFree(&kheap,ptr);
 }
