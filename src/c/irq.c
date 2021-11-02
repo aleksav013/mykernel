@@ -1,5 +1,5 @@
-#include"../include/stdio.h"
-#include"../include/asm.h"
+#include<stdio.h>
+#include<asm.h>
 
 #define INTERRUPT_GATE_32 0x8e
 

@@ -1,4 +1,4 @@
-#include"../include/types.h"
+#include<types.h>
 
 typedef struct _KHEAPBLOCKBM {
 	struct _KHEAPBLOCKBM	                *next;

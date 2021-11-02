@@ -8,9 +8,10 @@
 - grub
 - xorriso(libisoburn)
 - qemu
-- gdb(optional)
+- make
 
 ## Useful articles
 - [Bare Bones](https://wiki.osdev.org/Bare_Bones)
 - [Global Descriptor Table](https://wiki.osdev.org/Global_Descriptor_Table)
 - [Interrupt Descriptor Table](https://wiki.osdev.org/Interrupt_Descriptor_Table)
+- [Hosted GCC Cross-Compiler](https://wiki.osdev.org/Hosted_GCC_Cross-Compiler)

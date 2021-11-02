@@ -1,6 +1,6 @@
-#include"../include/types.h"
-#include"../include/asm.h"
-#include"../include/stdio.h"
+#include<types.h>
+#include<asm.h>
+#include<stdio.h>
 
 #define BUFFER_SIZE 200
 char buffer[BUFFER_SIZE];

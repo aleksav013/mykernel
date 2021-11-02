@@ -1,6 +1,6 @@
-#include"../include/types.h"
-#include"../include/asm.h"
-#include"../include/stdio.h"
+#include<types.h>
+#include<asm.h>
+#include<stdio.h>
 
 void add_idt_entry(size_t num,uint32_t offset);
 

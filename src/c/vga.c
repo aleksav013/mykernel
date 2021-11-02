@@ -1,7 +1,7 @@
-#include"../include/types.h"
-#include"../include/string.h"
-#include"../include/asm.h"
-#include"../include/vga.h"
+#include<types.h>
+#include<string.h>
+#include<asm.h>
+#include<vga.h>
 
 size_t terminal_row;
 size_t terminal_column;

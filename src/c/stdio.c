@@ -1,5 +1,5 @@
-#include"../include/types.h"
-#include"../include/string.h"
+#include<types.h>
+#include<string.h>
 #include<stdarg.h>
 
 void terminal_putchar(char c);

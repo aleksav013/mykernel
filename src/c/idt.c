@@ -1,6 +1,6 @@
-#include"../include/types.h"
-#include"../include/irq.h"
-#include"../include/asm.h"
+#include<types.h>
+#include<irq.h>
+#include<asm.h>
 
 #define INTERRUPT_GATE_32 0x8E
 

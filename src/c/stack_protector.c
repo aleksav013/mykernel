@@ -1,5 +1,5 @@
-#include <stdint.h>
-#include"../include/stdio.h"
+#include<stdint.h>
+#include<stdio.h>
  
 #if UINT32_MAX == UINTPTR_MAX
 #define STACK_CHK_GUARD 0xe2dee396

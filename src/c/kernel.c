@@ -1,5 +1,5 @@
-#include"../include/stdio.h"
-#include"../include/heap.h"
+#include<stdio.h>
+#include<heap.h>
 
 void terminal_initialize(void);
 void init_idt_table(void);

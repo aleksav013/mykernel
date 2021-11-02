@@ -1,7 +1,7 @@
-#include"../include/types.h"
-#include"../include/string.h"
-#include"../include/stdio.h"
-#include"../include/vga.h"
+#include<types.h>
+#include<string.h>
+#include<stdio.h>
+#include<vga.h>
 
 #define CMD_LENGTH 20
 
