@@ -1,4 +1,3 @@
-#include<stdio.h>
 #include<heap.h>
 
 void terminal_initialize(void);
