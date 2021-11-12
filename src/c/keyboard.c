@@ -3,7 +3,11 @@
 #include<stdio.h>
 
 #define BUFFER_SIZE 200
-char buffer[BUFFER_SIZE];
+#define BUFFER_LOG 200
+char buffer[BUFFER_LOG][BUFFER_SIZE];
+size_t buffer_size[BUFFER_LOG];
+size_t buffer_current=0;
+size_t buffer_all=0;
 size_t buffer_index=0;
 
 #define PIC1_COMMAND_PORT 0x20
@@ -15,28 +19,35 @@ size_t buffer_index=0;
 #define KEYBOARD_STATUS_PORT 0x64
 
 void previous_field(void);
-void terminal_putchar(char c);
 void tty(char *buffer);
 void prompt(void);
 void clear();
 void us_en(char keymap[]);
+void us_en_shift(char keymap[]);
 
 char charcode[256];
+char shift_charcode[256];
 bool ispressed[128];
 
 void init_keyboard()
 {
     us_en(charcode);
+    us_en_shift(shift_charcode);
+}
+
+void deletelast()
+{
+    previous_field();
+    printf(" ");
+    previous_field();
 }
 
 void backspace()
 {
     if(buffer_index<=0) return;
 
-    previous_field();
-    printf(" ");
-    previous_field();
-    buffer[--buffer_index]='\0';
+    deletelast();
+    buffer[buffer_current][--buffer_index]='\0';
     return;
 }
 
@@ -45,8 +56,14 @@ void enter()
     printf("\n");
     if(buffer_index>0)
     {
-	tty(buffer);
-	for(int i=0;i<BUFFER_SIZE;i++) buffer[i]='\0';
+	tty(buffer[buffer_current]);
+	buffer_size[buffer_current]=buffer_index;
+	if(buffer_current==buffer_all) buffer_current=(++buffer_all);
+	else
+	{
+	    for(size_t i=0;i<BUFFER_SIZE;i++) buffer[buffer_all][i]='\0';
+	    buffer_current=buffer_all;
+	}
 	buffer_index=0;
     }
     prompt();
@@ -55,10 +72,43 @@ void enter()
 
 void space()
 {
-    buffer[buffer_index++]=' ';
+    buffer[buffer_current][buffer_index++]=' ';
     printf(" ");
 }
+
+void keyup()
+{
+    if(buffer_current>0)
+    {
+	buffer_size[buffer_current]=buffer_index;
+	for(size_t i=0;i<buffer_index;i++) deletelast();
+	buffer_current--;
+	buffer_index=buffer_size[buffer_current];
+	printf("%s",buffer[buffer_current]);
+    }
+}
+void keydown()
+{
+    if(buffer_current<buffer_all)
+    {
+	buffer_size[buffer_current]=buffer_index;
+	for(size_t i=0;i<buffer_index;i++) deletelast();
+	buffer_current++;
+	buffer_index=buffer_size[buffer_current];
+	printf("%s",buffer[buffer_current]);
+    }
+}
+void keyleft()
+{
+
+}
+void keyright()
+{
+
+}
+
 #define lshift ispressed[0x2A]
+#define rshift ispressed[0x36]
 #define lctrl ispressed[0x1D]
 
 void keyboard_handler()
@@ -69,32 +119,37 @@ void keyboard_handler()
     if (status & 0x1)
     {
 	uint8_t keycode = ioport_in(KEYBOARD_DATA_PORT);
+//	printf("%d\n",keycode);
 	if(keycode<0x80)
 	{
 	    ispressed[keycode]=1;
 	    if(keycode==0x0E) backspace();
 	    else if(keycode==0x1C) enter();
 	    else if(keycode==0x39) space();
+	    else if(keycode==72) keyup();
+	    else if(keycode==80) keydown();
+	    else if(keycode==75) keyleft();
+	    else if(keycode==77) keyright();
 	    else
 	    {
 		char c=charcode[keycode];
 		if(c!=' ')
 		{
-		    if(lshift)
-		    {
-			if(c>='a'&&c<='z') c-=32;
-		    }
 		    if(lctrl)
 		    {
 			if(c=='l')
 			{
 			    clear();
 			    prompt();
-			    printf("%s",buffer);
+			    printf("%s",buffer[buffer_current]);
 			    return;
 			}
 		    }
-		    buffer[buffer_index++]=c;
+		    if(lshift||rshift)
+		    {
+			c=shift_charcode[keycode];
+		    }
+		    buffer[buffer_current][buffer_index++]=c;
 		    printf("%c",c);
 		}
 	    }
