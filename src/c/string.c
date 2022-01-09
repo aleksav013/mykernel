@@ -36,9 +36,9 @@ void stringrev(char *str)
 
     for(size_t j=0;j<i-j;j++)
     {
-	char tmp=str[i-j];
-	str[i-j]=str[j];
-	str[j]=tmp;
+        char tmp=str[i-j];
+        str[i-j]=str[j];
+        str[j]=tmp;
     }
 }
 
@@ -48,9 +48,9 @@ uint32_t stoi(const char *str)
 
     for(size_t i=0;str[i]!='\0';i++)
     {
-	if(str[i]<'0'||str[i]>'9') return num;
-	num*=10;
-	num+=str[i]-'0';
+        if(str[i]<'0'||str[i]>'9') return num;
+        num*=10;
+        num+=str[i]-'0';
     }
 
     return num;
@@ -61,11 +61,11 @@ void itos(uint32_t num,char *str)
     if(num==0) stringcpy(str,"0");
     else
     {
-	size_t i=0;
-	for(;num>0;num/=10,i++) str[i]='0'+num%10;
-	str[i]='\0';
+        size_t i=0;
+        for(;num>0;num/=10,i++) str[i]='0'+num%10;
+        str[i]='\0';
 
-	stringrev(str);
+        stringrev(str);
     }
 }
 
@@ -79,16 +79,16 @@ double stof(const char *str)
 
     for(;str[i]!='\0';i++)
     {
-	if(str[i]=='.')
-	{
-	    if(point) return num/pow;
-	    point=1;
-	    continue;
-	}
-	if(str[i]<'0'||str[i]>'9') return num/pow;
-	num*=10;
-	num+=str[i]-'0';
-	if(point) pow*=10;
+        if(str[i]=='.')
+        {
+            if(point) return num/pow;
+            point=1;
+            continue;
+        }
+        if(str[i]<'0'||str[i]>'9') return num/pow;
+        num*=10;
+        num+=str[i]-'0';
+        if(point) pow*=10;
     }
 
     return num/pow;
@@ -105,9 +105,9 @@ void ftos(double num, char *str)
 
     for(size_t i=0;i<decimals;i++)
     {
-	num-=(uint32_t)num;
-	num*=10;
-	c[0]=(uint32_t)num+'0';
-	stringcat(str,c);
+        num-=(uint32_t)num;
+        num*=10;
+        c[0]=(uint32_t)num+'0';
+        stringcat(str,c);
     }
 }

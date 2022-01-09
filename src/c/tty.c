@@ -16,17 +16,17 @@ size_t pieces(char pieces[][CMD_LENGTH],char *buffer)
     while(buffer[i]==' '&&buffer[i]!='\0') i++;
     for(;buffer[i]!='\0';i++)
     {
-	if(buffer[i]==' ')
-	{
-	    while(buffer[i]==' '&&buffer[i]!='\0') i++;
-	    j=0;
-	    r++;
-	    i--;
-	}
-	else
-	{
-	    pieces[r][j++]=buffer[i];
-	}
+        if(buffer[i]==' ')
+        {
+            while(buffer[i]==' '&&buffer[i]!='\0') i++;
+            j=0;
+            r++;
+            i--;
+        }
+        else
+        {
+            pieces[r][j++]=buffer[i];
+        }
     }
     return r+1;
 }
@@ -35,7 +35,7 @@ void echo(size_t numberof,char parts[][CMD_LENGTH])
 {
     for(size_t i=1;i<numberof;i++)
     {
-	printf("%s ",parts[i]);
+        printf("%s ",parts[i]);
     }
     printf("\n");
 }
@@ -58,8 +58,8 @@ void number(size_t numberof,char parts[][CMD_LENGTH])
     if(numberof==1) printf("Please enter a number\n");
     else
     {
-	printf("Entered integer number is %d\n",stoi(parts[1]));
-	printf("Entered float number is: %f\n",stof(parts[1]));
+        printf("Entered integer number is %d\n",stoi(parts[1]));
+        printf("Entered float number is: %f\n",stof(parts[1]));
     }
 }
 
@@ -88,30 +88,30 @@ void prompt()
 void neofetch()
 {
     set_color(VGA_COLOR_WHITE,VGA_COLOR_BLACK);
-    printf("      .                ");			printf("Dobrodosli u moj     \n");
-    printf("     J:L    (\"\"\")      ");		printf("operativni sistem :) \n");
-    printf("     |:|     III       ");			printf("Uzivajte!            \n");
-    printf("     |:|     III       ");			printf("                     \n");
-    printf("     |:|     III       ");			printf("Welcome to my        \n");
-    printf("     |:|   __III__     ");			printf("operating system :)  \n");
-    printf("     |:| /:-.___,-:\\   ");			printf("Enjoy your stay!     \n");
-    printf("     |:| \\]  |:|  [/   ");			printf("                     \n");
-    printf("     |:|     |:|       ");			printf("                     \n");
-    printf("     |:|     |:|       ");			printf("                     \n");
-    printf("     |:|     |:|       ");			printf("                     \n");
-    printf(" /]  |:|  [\\ |:|       ");			printf("                     \n");
-    printf(" \\:-'\"\"\"`-:/ |:|       ");		printf("                     \n");
-    printf("   \"\"III\"\"   |:|       ");		printf("                     \n");
-    printf("     III     |:|       ");			printf("                     \n");
-    printf("     III     |:|       ");			printf("                     \n");
-    printf("     III     |:|       ");			printf("napravio/made by:    \n");
-    printf("    (___)    J:F       ");			printf("Aleksa Vuckovic      \n");
-    printf("              \"        ");			printf("                     \n");
+    printf("      .                ");         printf("Dobrodosli u moj     \n");
+    printf("     J:L    (\"\"\")      ");      printf("operativni sistem :) \n");
+    printf("     |:|     III       ");         printf("Uzivajte!            \n");
+    printf("     |:|     III       ");         printf("                     \n");
+    printf("     |:|     III       ");         printf("Welcome to my        \n");
+    printf("     |:|   __III__     ");         printf("operating system :)  \n");
+    printf("     |:| /:-.___,-:\\   ");        printf("Enjoy your stay!     \n");
+    printf("     |:| \\]  |:|  [/   ");        printf("                     \n");
+    printf("     |:|     |:|       ");         printf("                     \n");
+    printf("     |:|     |:|       ");         printf("                     \n");
+    printf("     |:|     |:|       ");         printf("                     \n");
+    printf(" /]  |:|  [\\ |:|       ");        printf("                     \n");
+    printf(" \\:-'\"\"\"`-:/ |:|       ");     printf("                     \n");
+    printf("   \"\"III\"\"   |:|       ");     printf("                     \n");
+    printf("     III     |:|       ");         printf("                     \n");
+    printf("     III     |:|       ");         printf("                     \n");
+    printf("     III     |:|       ");         printf("napravio/made by:    \n");
+    printf("    (___)    J:F       ");         printf("Aleksa Vuckovic      \n");
+    printf("              \"        ");        printf("                     \n");
 
     for(size_t i=0;i<16;i++)
     {
-	set_color(0,i);
-	printf("  ",i);
+        set_color(0,i);
+        printf("  ",i);
     }
     printf("\n");
 

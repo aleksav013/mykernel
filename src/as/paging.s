@@ -1,4 +1,4 @@
-.globl loadPageDirectory
+.global loadPageDirectory
 loadPageDirectory:
     push %ebp
     mov %esp, %ebp
@@ -9,7 +9,7 @@ loadPageDirectory:
     ret
 
 .text
-.globl enablePaging
+.global enablePaging
 enablePaging:
     push %ebp
     mov %esp, %ebp

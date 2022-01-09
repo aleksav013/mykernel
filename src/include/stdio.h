@@ -1,12 +1,12 @@
 #ifndef _STDIO_H
 #define _STDIO_H
+
 #include <stdarg.h>
 #include <stddef.h>
+
 #define SEEK_SET 0
 typedef struct { int unused; } FILE;
-#ifdef __cplusplus
-extern "C" {
-#endif
+
 extern FILE* stderr;
 #define stderr stderr
 int fclose(FILE*);
@@ -22,7 +22,4 @@ int vfprintf(FILE*, const char*, va_list);
 
 void printf(char *str, ...);
 
-#ifdef __cplusplus
-}
-#endif
 #endif

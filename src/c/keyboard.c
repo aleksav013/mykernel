@@ -28,6 +28,10 @@ void us_en_shift(char keymap[]);
 char charcode[256];
 char shift_charcode[256];
 bool ispressed[128];
+#define lshift 0x2A
+#define rshift 0x36
+#define lctrl 0x1D
+#define rctrl 0x1D
 
 void init_keyboard()
 {
@@ -56,15 +60,15 @@ void enter()
     printf("\n");
     if(buffer_index>0)
     {
-	tty(buffer[buffer_current]);
-	buffer_size[buffer_current]=buffer_index;
-	if(buffer_current==buffer_all) buffer_current=(++buffer_all);
-	else
-	{
-	    for(size_t i=0;i<BUFFER_SIZE;i++) buffer[buffer_all][i]='\0';
-	    buffer_current=buffer_all;
-	}
-	buffer_index=0;
+        tty(buffer[buffer_current]);
+        buffer_size[buffer_current]=buffer_index;
+        if(buffer_current==buffer_all) buffer_current=(++buffer_all);
+        else
+        {
+            for(size_t i=0;i<BUFFER_SIZE;i++) buffer[buffer_all][i]='\0';
+            buffer_current=buffer_all;
+        }
+        buffer_index=0;
     }
     prompt();
     return;
@@ -80,36 +84,33 @@ void keyup()
 {
     if(buffer_current>0)
     {
-	buffer_size[buffer_current]=buffer_index;
-	for(size_t i=0;i<buffer_index;i++) deletelast();
-	buffer_current--;
-	buffer_index=buffer_size[buffer_current];
-	printf("%s",buffer[buffer_current]);
+        buffer_size[buffer_current]=buffer_index;
+        for(size_t i=0;i<buffer_index;i++) deletelast();
+        buffer_current--;
+        buffer_index=buffer_size[buffer_current];
+        printf("%s",buffer[buffer_current]);
     }
 }
+
 void keydown()
 {
     if(buffer_current<buffer_all)
     {
-	buffer_size[buffer_current]=buffer_index;
-	for(size_t i=0;i<buffer_index;i++) deletelast();
-	buffer_current++;
-	buffer_index=buffer_size[buffer_current];
-	printf("%s",buffer[buffer_current]);
+        buffer_size[buffer_current]=buffer_index;
+        for(size_t i=0;i<buffer_index;i++) deletelast();
+        buffer_current++;
+        buffer_index=buffer_size[buffer_current];
+        printf("%s",buffer[buffer_current]);
     }
 }
+
 void keyleft()
 {
-
 }
+
 void keyright()
 {
-
 }
-
-#define lshift ispressed[0x2A]
-#define rshift ispressed[0x36]
-#define lctrl ispressed[0x1D]
 
 void keyboard_handler()
 {
@@ -118,45 +119,64 @@ void keyboard_handler()
 
     if (status & 0x1)
     {
-	uint8_t keycode = ioport_in(KEYBOARD_DATA_PORT);
-//	printf("%d\n",keycode);
-	if(keycode<0x80)
-	{
-	    ispressed[keycode]=1;
-	    if(keycode==0x0E) backspace();
-	    else if(keycode==0x1C) enter();
-	    else if(keycode==0x39) space();
-	    else if(keycode==72) keyup();
-	    else if(keycode==80) keydown();
-	    else if(keycode==75) keyleft();
-	    else if(keycode==77) keyright();
-	    else
-	    {
-		char c=charcode[keycode];
-		if(c!=' ')
-		{
-		    if(lctrl)
-		    {
-			if(c=='l')
-			{
-			    clear();
-			    prompt();
-			    printf("%s",buffer[buffer_current]);
-			    return;
-			}
-		    }
-		    if(lshift||rshift)
-		    {
-			c=shift_charcode[keycode];
-		    }
-		    buffer[buffer_current][buffer_index++]=c;
-		    printf("%c",c);
-		}
-	    }
-	}
-	else
-	{
-	    ispressed[keycode-0x80]=0;
-	}
+        uint8_t keycode = ioport_in(KEYBOARD_DATA_PORT);
+        if(keycode<0x80)
+        {
+            char c=charcode[keycode];
+            ispressed[keycode]=1;
+            // printf("%d ",&keycode);
+
+            switch(keycode)
+            {
+                case 0x0E:
+                    backspace();
+                    break;
+                case 0x1C:
+                    enter();
+                    break;
+                case 0x39:
+                    space();
+                    break;
+                case 72:
+                    keyup();
+                    break;
+                case 80:
+                    keydown();
+                    break;
+                case 75:
+                    keyleft();
+                    break;
+                case 77:
+                    keyright();
+                    break;
+
+                default:
+                    if(c!=' ')
+                    {
+                        if(ispressed[lctrl]||ispressed[rctrl])
+                        {
+                            if(c=='l')
+                            {
+                                clear();
+                                prompt();
+                                printf("%s",buffer[buffer_current]);
+                                return;
+                            }
+                        }
+                        if(ispressed[lshift]||ispressed[rshift])
+                        {
+                            c=shift_charcode[keycode];
+                        }
+                        buffer[buffer_current][buffer_index++]=c;
+                        printf("%c",c);
+                    }
+                    break;
+            }
+
+        }
+        else
+        {
+            ispressed[keycode-0x80]=0;
+        }
     }
 }

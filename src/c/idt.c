@@ -42,6 +42,7 @@ void init_idt_entry(size_t num, uint32_t offset, uint16_t selector, uint8_t type
     idt[num].type_attr=type_attr;
     idt[num].offset2=(offset & 0xffff0000)>>16;
 }
+
 void add_idt_entry(size_t num,uint32_t offset)
 {
     init_idt_entry(num,offset,KERNEL_CODE,INTERRUPT_GATE_32);
@@ -59,7 +60,6 @@ void init_pic()
     ioport_out(PIC2_DATA_PORT, 0x01);
     ioport_out(PIC1_DATA_PORT, 0xff);
     ioport_out(PIC2_DATA_PORT, 0xff);
-
     ioport_out(PIC1_DATA_PORT, 0xFC);
 }
 
@@ -103,7 +103,6 @@ void init_idt_table()
 
     idtp.size=sizeof(struct idt_entry)*256-1;
     idtp.offset=(uint32_t)&idt;
-
 
     load_idt(&idtp);
 }

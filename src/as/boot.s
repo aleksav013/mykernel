@@ -3,7 +3,7 @@
 .set FLAGS,    ALIGN | MEMINFO
 .set MAGIC,    0x1BADB002
 .set CHECKSUM, -(MAGIC + FLAGS)
- 
+
 .section .multiboot
 .align 4
 .long MAGIC
@@ -51,20 +51,20 @@ stack_top:
 .section .text
 .type _start, @function
 _start:
-	call init_gdt_table
-	ljmp $CODE_SEGMENT, $code
-	
+    call init_gdt_table
+    ljmp $CODE_SEGMENT, $code
+
 code:
-	movw $DATA_SEGMENT, %ax
-	movw %ax, %ds
-	movw %ax, %es
-	movw %ax, %fs
-	movw %ax, %gs
-	movw %ax, %ss
-	movl $stack_top, %esp
-	cli
-	call _init
-	call kernel_main
-	hlt
- 
+    movw $DATA_SEGMENT, %ax
+    movw %ax, %ds
+    movw %ax, %es
+    movw %ax, %fs
+    movw %ax, %gs
+    movw %ax, %ss
+    movl $stack_top, %esp
+    cli
+    call _init
+    call kernel_main
+    hlt
+
 .size _start, . - _start
