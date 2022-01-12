@@ -1,10 +1,16 @@
 # HOST ARCH
-ARCH=i686-elf-
+ARCH=i686-aleksa-
 
 
 # GCC CROSS COMPILER
 export CC=$(ARCH)gcc
 export AS=$(ARCH)as
+
+WARNINGS := -Wall -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align \
+            -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations \
+            -Wredundant-decls -Wnested-externs -Winline -Wno-long-long \
+            -Wconversion -Wstrict-prototypes
+
 export CFLAGS=-ffreestanding -O2 -Wall -Wextra -fstack-protector-all
 
 
@@ -32,7 +38,7 @@ export AS_OBJECT_DIR=$(BUILD_DIR)/as
 export C_OBJECT_DIR=$(BUILD_DIR)/c
 
 ## SYSROOT
-SYSROOT_DIR=sysroot
+SYSROOT_DIR=/opt/aleksa
 SYSROOT_USR_DIR=$(SYSROOT_DIR)/usr
 SYSROOT_INCLUDE_DIR=$(SYSROOT_USR_DIR)/include
 
@@ -89,7 +95,6 @@ $(BINARY): $(OBJ)
 install_headers:
 	$(RM) $(SYSROOT_INCLUDE_DIR)
 	$(MKDIR) $(SYSROOT_INCLUDE_DIR)
-	$(CP) $(GCC_INCLUDE_DIR)/* $(SYSROOT_INCLUDE_DIR)
 	$(CP) $(INCLUDE_DIR)/* $(SYSROOT_INCLUDE_DIR)
 
 compile:
