@@ -1,6 +1,8 @@
 .PHONY: all
+
 all: $(C_OBJECTS)
 
+$(C_OBJECT_DIR)/%.o: %.c Makefile
+	$(CC) $(CFLAGS) -MD -MP -c $< -o $@
 
-$(C_OBJECT_DIR)/%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+-include $(C_OBJECTS:.o=.d)

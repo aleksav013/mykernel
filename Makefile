@@ -15,11 +15,10 @@ export CFLAGS=-ffreestanding -O2 -Wall -Wextra -fstack-protector-all
 
 
 # TOOLS
-MKDIR=mkdir -p
-RM=rm -rf
-CP=cp -r
+export MKDIR=mkdir -p
+export RM=rm -rf
+export CP=cp -r
 QEMU=qemu-system-x86_64
-#QEMU_DEBUG=-d int -D qemu.log
 
 
 
@@ -93,16 +92,11 @@ $(BINARY): $(OBJ)
 	$(CC) -T $(LINKER) -o $(BINARY) $(CFLAGS) -nostdlib -lgcc $(OBJ)
 
 install_headers:
-	$(RM) $(SYSROOT_INCLUDE_DIR)
-	$(MKDIR) $(SYSROOT_INCLUDE_DIR)
-	$(CP) $(INCLUDE_DIR)/* $(SYSROOT_INCLUDE_DIR)
+	./scripts/install_headers.sh
 
 compile:
 	$(MAKE) install_headers
-	$(MKDIR) $(AS_OBJECT_DIR)
-	$(MKDIR) $(C_OBJECT_DIR)
-	$(MAKE) --directory $(AS_SOURCE_DIR)
-	$(MAKE) --directory $(C_SOURCE_DIR)
+	@$(MAKE) --directory $(SOURCE_DIR)
 	$(MAKE) $(BINARY)
 
 $(ISO): $(BINARY)
