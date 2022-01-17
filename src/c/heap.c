@@ -1,22 +1,13 @@
+#include<source/heap.h>
 #include<types.h>
 
-typedef struct _KHEAPBLOCKBM {
-    struct _KHEAPBLOCKBM    *next;
-    uint32_t                size;
-    uint32_t                used;
-    uint32_t                bsize;
-    uint32_t                lfb;
-} KHEAPBLOCKBM;
-
-typedef struct _KHEAPBM {
-    KHEAPBLOCKBM            *fblock;
-} KHEAPBM;
-
-void k_heapBMInit(KHEAPBM *heap) {
+void k_heapBMInit(KHEAPBM *heap)
+{
     heap->fblock = 0;
 }
 
-int k_heapBMAddBlock(KHEAPBM *heap, uintptr_t addr, uint32_t size, uint32_t bsize) {
+int k_heapBMAddBlock(KHEAPBM *heap, uintptr_t addr, uint32_t size, uint32_t bsize)
+{
     KHEAPBLOCKBM        *b;
     uint32_t            bcnt;
     uint32_t            x;
@@ -48,13 +39,16 @@ int k_heapBMAddBlock(KHEAPBM *heap, uintptr_t addr, uint32_t size, uint32_t bsiz
     return 1;
 }
 
-static uint8_t k_heapBMGetNID(uint8_t a, uint8_t b) {
+static uint8_t k_heapBMGetNID(uint8_t a, uint8_t b);
+static uint8_t k_heapBMGetNID(uint8_t a, uint8_t b)
+{
     uint8_t        c;
-    for (c = a + 1; c == b || c == 0; ++c);
+    for (c=a+1;c==b||c==0;++c);
     return c;
 }
 
-void *k_heapBMAlloc(KHEAPBM *heap, uint32_t size) {
+void *k_heapBMAlloc(KHEAPBM *heap, uint32_t size)
+{
     KHEAPBLOCKBM    *b;
     uint8_t         *bm;
     uint32_t        bcnt;
@@ -63,33 +57,34 @@ void *k_heapBMAlloc(KHEAPBM *heap, uint32_t size) {
     uint8_t         nid;
 
     /* iterate blocks */
-    for (b = heap->fblock; b; b = b->next) {
+    for (b = heap->fblock; b; b = b->next)
+    {
         /* check if block has enough room */
-        if (b->size - (b->used * b->bsize) >= size) {
+        if (b->size - (b->used * b->bsize) >= size)
+        {
 
             bcnt = b->size / b->bsize;
             bneed = (size / b->bsize) * b->bsize < size ? size / b->bsize + 1 : size / b->bsize;
             bm = (uint8_t*)&b[1];
 
-            for (x = (b->lfb + 1 >= bcnt ? 0 : b->lfb + 1); x != b->lfb; ++x) {
+            for (x = (b->lfb + 1 >= bcnt ? 0 : b->lfb + 1); x != b->lfb; ++x)
+            {
                 /* just wrap around */
-                if (x >= bcnt) {
-                    x = 0;
-                }
+                if (x >= bcnt) x = 0;
 
-                if (bm[x] == 0) {
+                if (bm[x] == 0)
+                {
                     /* count free blocks */
                     for (y = 0; bm[x + y] == 0 && y < bneed && (x + y) < bcnt; ++y);
 
                     /* we have enough, now allocate them */
-                    if (y == bneed) {
+                    if (y == bneed)
+                    {
                         /* find ID that does not match left or right */
                         nid = k_heapBMGetNID(bm[x - 1], bm[x + y]);
 
                         /* allocate by setting id */
-                        for (z = 0; z < y; ++z) {
-                            bm[x + z] = nid;
-                        }
+                        for (z = 0; z < y; ++z) bm[x + z] = nid;
 
                         /* optimization */
                         b->lfb = (x + bneed) - 2;
@@ -110,7 +105,8 @@ void *k_heapBMAlloc(KHEAPBM *heap, uint32_t size) {
     return 0;
 }
 
-void k_heapBMFree(KHEAPBM *heap, void *ptr) {
+void k_heapBMFree(KHEAPBM *heap, void *ptr)
+{
     KHEAPBLOCKBM    *b;
     uintptr_t       ptroff;
     uint32_t        bi, x;
@@ -118,7 +114,8 @@ void k_heapBMFree(KHEAPBM *heap, void *ptr) {
     uint8_t         id;
     uint32_t        max;
 
-    for (b = heap->fblock; b; b = b->next) {
+    for (b = heap->fblock; b; b = b->next)
+    {
         if ((uintptr_t)ptr > (uintptr_t)b && (uintptr_t)ptr < (uintptr_t)b + sizeof(KHEAPBLOCKBM) + b->size) {
             /* found block */
             ptroff = (uintptr_t)ptr - (uintptr_t)&b[1];  /* get offset to get block */
@@ -130,9 +127,7 @@ void k_heapBMFree(KHEAPBM *heap, void *ptr) {
             id = bm[bi];
             /* oddly.. GCC did not optimize this */
             max = b->size / b->bsize;
-            for (x = bi; bm[x] == id && x < max; ++x) {
-                bm[x] = 0;
-            }
+            for (x = bi; bm[x] == id && x < max; ++x) bm[x] = 0;
             /* update free block count */
             b->used -= x - bi;
             return;

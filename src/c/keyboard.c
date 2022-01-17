@@ -1,6 +1,7 @@
+#include<source/keyboard.h>
 #include<types.h>
 #include<asm.h>
-#include<stdio.h>
+#include<source/stdio.h>
 
 #define BUFFER_SIZE 200
 #define BUFFER_LOG 200
@@ -21,7 +22,7 @@ size_t buffer_index=0;
 void previous_field(void);
 void tty(char *buffer);
 void prompt(void);
-void clear();
+void clear(void);
 void us_en(char keymap[]);
 void us_en_shift(char keymap[]);
 

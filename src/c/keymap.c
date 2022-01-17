@@ -1,3 +1,5 @@
+#include<source/keymap.h>
+
 void us_en(char keymap[])
 {
     keymap[0x01]=' ';        //escape pressed
@@ -171,6 +173,7 @@ void us_en(char keymap[])
     keymap[0xD7]=' ';        //F11 released
     keymap[0xD8]=' ';        //F12 released
 }
+
 void us_en_shift(char keymap[])
 {
     keymap[0x01]=' ';        //escape pressed

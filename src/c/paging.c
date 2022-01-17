@@ -1,11 +1,12 @@
+#include<source/paging.h>
 #include<types.h>
 
 extern void loadPageDirectory(uint32_t*);
-extern void enablePaging();
+extern void enablePaging(void);
 
 uint32_t page_directory[1024] __attribute__((aligned(4096)));
 
-void set_pd()
+void set_pd(void)
 {
     //set each entry to not present
     for(size_t i=0;i<1024;i++)
@@ -37,7 +38,7 @@ void set_pt(size_t num,uint32_t address)
     // attributes: supervisor level, read/write, present
 }
 
-void set_paging()
+void set_paging(void)
 {
     set_pd();
     for(size_t i=0;i<1024;i++) set_pt(i,0x00400000 * i); // all 4GB mapped

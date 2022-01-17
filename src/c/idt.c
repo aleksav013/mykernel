@@ -1,54 +1,29 @@
+#include<source/idt.h>
 #include<types.h>
-#include<irq.h>
+#include<source/irq.h>
 #include<asm.h>
-
-#define INTERRUPT_GATE_32 0x8E
-
-#define KERNEL_CODE 0x08
-#define KERNEL_DATA 0x10
-
-#define PIC1_COMMAND_PORT 0x20
-#define PIC1_DATA_PORT 0x21
-#define PIC2_COMMAND_PORT 0xA0
-#define PIC2_DATA_PORT 0xA1
-
-struct idt_entry
-{
-    uint16_t offset1;
-    uint16_t selector;
-    uint8_t zero;
-    uint8_t type_attr;
-    uint16_t offset2;
-} __attribute__((packed));
-
-struct idt_pointer
-{
-    uint16_t size;
-    uint32_t offset;
-} __attribute__((packed));
 
 
 extern void load_idt(struct idt_pointer *idtp);
-extern void keyboard_irq();
 
 struct idt_entry idt[256];
 struct idt_pointer idtp;
 
 void init_idt_entry(size_t num, uint32_t offset, uint16_t selector, uint8_t type_attr)
 {
-    idt[num].offset1=(offset & 0xffff);
+    idt[num].offset1=(uint16_t)(offset & 0xffff);
     idt[num].selector=selector;
     idt[num].zero=0;
     idt[num].type_attr=type_attr;
-    idt[num].offset2=(offset & 0xffff0000)>>16;
+    idt[num].offset2=(uint16_t)((offset & 0xffff0000)>>16);
 }
 
-void add_idt_entry(size_t num,uint32_t offset)
+void add_idt_entry(size_t num, uint32_t offset)
 {
     init_idt_entry(num,offset,KERNEL_CODE,INTERRUPT_GATE_32);
 }
 
-void init_pic()
+void init_pic(void)
 {
     ioport_out(PIC1_COMMAND_PORT, 0x11);
     ioport_out(PIC2_COMMAND_PORT, 0x11);
@@ -63,7 +38,7 @@ void init_pic()
     ioport_out(PIC1_DATA_PORT, 0xFC);
 }
 
-void init_idt_table()
+void init_idt_table(void)
 {
     init_pic();
     add_idt_entry(0,(uint32_t)irq0);

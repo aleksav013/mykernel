@@ -20,6 +20,4 @@ size_t fwrite(const void*, size_t, size_t, FILE*);
 void setbuf(FILE*, char*);
 int vfprintf(FILE*, const char*, va_list);
 
-void printf(char *str, ...);
-
 #endif

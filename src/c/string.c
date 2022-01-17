@@ -1,6 +1,7 @@
+#include<source/string.h>
 #include<types.h>
 
-size_t stringlen(char *str)
+size_t stringlen(char* str)
 {
     size_t i;
 
@@ -9,7 +10,7 @@ size_t stringlen(char *str)
     return i;
 }
 
-bool stringcmp(char *str1,char *str2)
+bool stringcmp(const char* str1, const char* str2)
 {
     size_t i;
     for(i=0;str1[i]||str2[i];i++) if(str1[i]!=str2[i]) return 0;
@@ -17,7 +18,7 @@ bool stringcmp(char *str1,char *str2)
     return 0;
 }
 
-void stringcat(char *str1,char *str2)
+void stringcat(char* str1, const char* str2)
 {
     char *tmp=str1;
     while(*tmp) tmp++;
@@ -25,7 +26,7 @@ void stringcat(char *str1,char *str2)
     *tmp=*str2;
 }
 
-void stringcpy(char *str1,char *str2)
+void stringcpy(char *str1, const char *str2)
 {
     for(size_t i=0;str2[i]!='\0';i++) str1[i]=str2[i];
 }
@@ -42,7 +43,7 @@ void stringrev(char *str)
     }
 }
 
-uint32_t stoi(const char *str)
+uint32_t stoi(const char* str)
 {
     uint32_t num=0;
 
@@ -50,26 +51,26 @@ uint32_t stoi(const char *str)
     {
         if(str[i]<'0'||str[i]>'9') return num;
         num*=10;
-        num+=str[i]-'0';
+        num+=(uint32_t)(str[i]-'0');
     }
 
     return num;
 }
 
-void itos(uint32_t num,char *str)
+void itos(uint32_t num, char* str)
 {
     if(num==0) stringcpy(str,"0");
     else
     {
         size_t i=0;
-        for(;num>0;num/=10,i++) str[i]='0'+num%10;
+        for(;num>0;num/=10,i++) str[i]=(char)('0'+num%10);
         str[i]='\0';
 
         stringrev(str);
     }
 }
 
-double stof(const char *str)
+double stof(const char* str)
 {
     double num=0;
 
@@ -95,7 +96,7 @@ double stof(const char *str)
 }
 
 const size_t decimals=7;
-void ftos(double num, char *str)
+void ftos(double num, char* str)
 {
     itos((uint32_t)num,str);
 
@@ -107,7 +108,7 @@ void ftos(double num, char *str)
     {
         num-=(uint32_t)num;
         num*=10;
-        c[0]=(uint32_t)num+'0';
+        c[0]=(char)(num+'0');
         stringcat(str,c);
     }
 }

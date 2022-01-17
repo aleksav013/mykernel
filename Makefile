@@ -11,7 +11,7 @@ WARNINGS := -Wall -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align \
             -Wredundant-decls -Wnested-externs -Winline -Wno-long-long \
             -Wconversion -Wstrict-prototypes
 
-export CFLAGS=-ffreestanding -O2 -Wall -Wextra -fstack-protector-all
+export CFLAGS=-std=gnu99 -O3 $(WARNINGS) -ffreestanding -fstack-protector-all
 
 
 # TOOLS
@@ -70,7 +70,7 @@ CRTBEGIN_OBJECT=$(GCC_USR_DIR)/crtbegin.o
 CRTEND_OBJECT=$(GCC_USR_DIR)/crtend.o
 
 ## C OBJECTS
-C_OBJ=gdt.o heap.o idt.o kernel.o keyboard.o keymap.o stdio.o string.o tty.o vga.o irq.o stack_protector.o timer.o paging.o
+C_OBJ=gdt.o heap.o idt.o kernel.o keyboard.o keymap.o stdio.o string.o tty.o vga.o irq_handler.o stack_protector.o timer.o paging.o
 
 export C_OBJECTS=$(patsubst %,$(C_OBJECT_DIR)/%,$(C_OBJ))
 

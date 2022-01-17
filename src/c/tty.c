@@ -1,11 +1,10 @@
+#include<source/tty.h>
 #include<types.h>
-#include<string.h>
-#include<stdio.h>
-#include<vga.h>
+#include<source/string.h>
+#include<source/stdio.h>
+#include<source/vga.h>
 
-#define CMD_LENGTH 20
 
-void clear();
 extern uint32_t time;
 
 size_t pieces(char pieces[][CMD_LENGTH],char *buffer)
@@ -48,7 +47,7 @@ void merge(char parts[][CMD_LENGTH])
     printf("%s\n",str1);
 }
 
-void ls()
+void ls(void)
 {
     printf("Filesystem not implemented yet\n");
 }
@@ -63,12 +62,12 @@ void number(size_t numberof,char parts[][CMD_LENGTH])
     }
 }
 
-void uptime()
+void uptime(void)
 {
     printf("System uptime is: %d seconds\n",time);
 }
 
-void prompt()
+void prompt(void)
 {
     //printf("[user@myos]$ ");
     set_color(VGA_COLOR_RED,VGA_COLOR_BLACK);
@@ -85,7 +84,7 @@ void prompt()
     printf("$ ");
 }
 
-void neofetch()
+void neofetch(void)
 {
     set_color(VGA_COLOR_WHITE,VGA_COLOR_BLACK);
     printf("      .                ");         printf("Dobrodosli u moj     \n");
@@ -120,7 +119,7 @@ void neofetch()
     uptime();
 }
 
-void help()
+void help(void)
 {
     printf("Currently available commands:\n");
     printf("clear echo merge ls number uptime neofetch help\n");

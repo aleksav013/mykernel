@@ -1,11 +1,12 @@
-#include<heap.h>
+#include<source/kernel.h>
+#include<source/heap.h>
 
 void terminal_initialize(void);
 void init_idt_table(void);
 void init_keyboard(void);
 void init_timer(uint32_t frequency);
 void prompt(void);
-void set_paging();
+void set_paging(void);
 
 void kernel_main(void)
 {

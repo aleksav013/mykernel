@@ -1,13 +1,10 @@
+#include<source/stdio.h>
 #include<types.h>
-#include<string.h>
 #include<stdarg.h>
+#include<source/string.h>
+#include<source/vga.h>
 
-void terminal_putchar(char c);
-void terminal_writestring(char* data);
-void terminal_writeint(uint32_t data);
-void terminal_writefloat(double num);
-
-void printf(char *str, ...)
+void printf(const char *str, ...)
 {
     size_t count=0;
     for(size_t i=0;str[i]!='\0';i++) if(str[i]=='%') count++;
@@ -22,11 +19,11 @@ void printf(char *str, ...)
             i++;
             if(str[i]=='c') terminal_putchar((char)va_arg(list,int));
             else if(str[i]=='s') terminal_writestring(va_arg(list,char*));
-            else if(str[i]=='d') terminal_writeint(va_arg(list,int));
+            else if(str[i]=='d') terminal_writeint((uint32_t)va_arg(list,int));
             else if(str[i]=='f') terminal_writefloat(va_arg(list,double));
             else
             {
-                terminal_writestring("wrong format using print function\n");
+                terminal_writestring("Wrong format using print function\n");
                 return;
             }
         }

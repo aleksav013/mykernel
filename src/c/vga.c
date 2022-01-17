@@ -1,7 +1,7 @@
+#include<source/vga.h>
 #include<types.h>
-#include<string.h>
+#include<source/string.h>
 #include<asm.h>
-#include<vga.h>
 
 size_t terminal_row;
 size_t terminal_column;
@@ -10,15 +10,16 @@ uint16_t* terminal_buffer;
 
 void set_color(enum vga_color fg, enum vga_color bg)
 {
-    terminal_color = fg | bg << 4;
+    terminal_color = (uint8_t)(fg|bg<<4);
 }
 
-static inline uint16_t vga_entry(unsigned char uc, uint8_t color)
+static inline uint16_t vga_entry(char uc, uint8_t color);
+static inline uint16_t vga_entry(char uc, uint8_t color)
 {
-    return (uint16_t) uc | (uint16_t) color << 8;
+    return (uint16_t)(uc|color<<8);
 }
 
-void terminal_initialize()
+void terminal_initialize(void)
 {
     terminal_row=0;
     terminal_column=0;
@@ -40,19 +41,19 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
     terminal_buffer[index]=vga_entry(c, color);
 }
 
-void movescreen()
+void movescreen(void)
 {
     terminal_row--;
     for(size_t i=0;i<VGA_HEIGHT;i++) for(size_t j=0;j<VGA_WIDTH;j++)
         terminal_buffer[i*VGA_WIDTH+j]=terminal_buffer[(i+1)*VGA_WIDTH+j];
 }
 
-void next_field()
+void next_field(void)
 {
     if(++terminal_column==VGA_WIDTH) terminal_column=0,terminal_row++;
 }
 
-void previous_field()
+void previous_field(void)
 {
     if(terminal_column) terminal_column--;
     else terminal_row--,terminal_column=VGA_WIDTH-1;
@@ -69,7 +70,7 @@ void terminal_putchar(char c)
     if (terminal_row==VGA_HEIGHT) movescreen();
 }
 
-void terminal_writestring(char* data)
+void terminal_writestring(const char* data)
 {
     for(int i=0;data[i]!='\0';i++) terminal_putchar(data[i]);
 }
@@ -92,7 +93,7 @@ void terminal_writefloat(double num)
     terminal_writestring(str);
 }
 
-void clear()
+void clear(void)
 {
     for(size_t i=0;i<VGA_HEIGHT;i++) for(size_t j=0;j<VGA_WIDTH;j++) terminal_putchar(' ');
     terminal_column=0;

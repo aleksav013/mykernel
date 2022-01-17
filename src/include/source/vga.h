@@ -1,5 +1,5 @@
-#ifndef VGA_H
-#define VGA_H
+#ifndef SOURCE_VGA_H
+#define SOURCE_VGA_H
 
 #include<types.h>
 
@@ -24,6 +24,17 @@ enum vga_color {
     VGA_COLOR_YELLOW = 14,
     VGA_COLOR_WHITE = 15,
 };
+
 void set_color(enum vga_color fg, enum vga_color bg);
+void terminal_initialize(void);
+void terminal_putentryat(char c, uint8_t color, size_t x, size_t y);
+void movescreen(void);
+void next_field(void);
+void previous_field(void);
+void terminal_putchar(char c);
+void terminal_writestring(const char* data);
+void terminal_writeint(uint32_t num);
+void terminal_writefloat(double num);
+void clear(void);
 
 #endif
