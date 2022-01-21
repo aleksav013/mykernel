@@ -1,12 +1,12 @@
 #include<source/kernel.h>
+#include<source/paging.h>
+#include<source/idt.h>
+#include<source/timer.h>
+#include<source/keyboard.h>
 #include<source/heap.h>
+#include<source/vga.h>
+#include<source/tty.h>
 
-void terminal_initialize(void);
-void init_idt_table(void);
-void init_keyboard(void);
-void init_timer(uint32_t frequency);
-void prompt(void);
-void set_paging(void);
 
 void kernel_main(void)
 {

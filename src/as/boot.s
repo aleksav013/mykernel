@@ -10,35 +10,6 @@
 .long FLAGS
 .long CHECKSUM
 
-.global _start
-.global load_gdt
-.global load_idt
-.global enable_interrupts
-.global ioport_in
-.global ioport_out
-
-load_gdt:
-    movl 4(%esp), %edx
-    lgdt (%edx)
-    ret
-
-load_idt:
-    movl 4(%esp), %edx
-    lidt (%edx)
-    sti
-    ret
-
-ioport_in:
-    movl 4(%esp),%edx
-    in %dx,%al
-    ret
-
-ioport_out:
-    movl 4(%esp),%edx
-    movl 8(%esp),%eax
-    outb %al,%dx
-    ret
-
 .set CODE_SEGMENT, 0x08
 .set DATA_SEGMENT, 0x10
 
@@ -49,6 +20,7 @@ stack_bottom:
 stack_top:
 
 .section .text
+.global _start
 .type _start, @function
 _start:
     call init_gdt_table

@@ -1,6 +1,12 @@
 #ifndef SOURCE_IRQ_HANDLER_H
 #define SOURCE_IRQ_HANDLER_H
 
+#define INTERRUPT_GATE_32 0x8e
+
+#define KERNEL_CODE 0x08
+#define KERNEL_DATA 0x10
+
+
 void irq0_handler(void);
 void irq1_handler(void);
 void irq2_handler(void);

@@ -18,7 +18,7 @@ export CFLAGS=-std=gnu99 -O3 $(WARNINGS) -ffreestanding -fstack-protector-all
 export MKDIR=mkdir -p
 export RM=rm -rf
 export CP=cp -r
-QEMU=qemu-system-x86_64
+QEMU=qemu-system-i386
 
 
 
@@ -26,9 +26,6 @@ QEMU=qemu-system-x86_64
 
 ## SOURCE
 SOURCE_DIR=src
-AS_SOURCE_DIR=$(SOURCE_DIR)/as
-C_SOURCE_DIR=$(SOURCE_DIR)/c
-INCLUDE_DIR=$(SOURCE_DIR)/include
 
 ## BUILD
 ISO_DIR=isodir
@@ -36,14 +33,8 @@ BUILD_DIR=${CURDIR}/build
 export AS_OBJECT_DIR=$(BUILD_DIR)/as
 export C_OBJECT_DIR=$(BUILD_DIR)/c
 
-## SYSROOT
-SYSROOT_DIR=/opt/aleksa
-SYSROOT_USR_DIR=$(SYSROOT_DIR)/usr
-SYSROOT_INCLUDE_DIR=$(SYSROOT_USR_DIR)/include
-
 ## GCC USR
 GCC_USR_DIR=$(shell $(CC) -print-file-name=)
-GCC_INCLUDE_DIR=$(GCC_USR_DIR)/include
 
 
 
@@ -57,25 +48,15 @@ ISO=$(TARGET).iso
 # OBJECTS
 
 ## AS OBJECTS
-CRTI_OBJ=crti.o
-CRTN_OBJ=crtn.o
-AS_OBJ=boot.o irq.o paging.o
-
-AS_OBJECT=$(patsubst %,$(AS_OBJECT_DIR)/%,$(AS_OBJ))
-CRTI_OBJECT=$(patsubst %,$(AS_OBJECT_DIR)/%,$(CRTI_OBJ))
-CRTN_OBJECT=$(patsubst %,$(AS_OBJECT_DIR)/%,$(CRTN_OBJ))
-export AS_OBJECTS=$(AS_OBJECT) $(CRTI_OBJECT) $(CRTN_OBJECT)
-
-CRTBEGIN_OBJECT=$(GCC_USR_DIR)/crtbegin.o
-CRTEND_OBJECT=$(GCC_USR_DIR)/crtend.o
+AS_OBJ=boot.o ioport.o gdt.o idt.o irq.o paging.o
+export AS_OBJECTS=$(patsubst %,$(AS_OBJECT_DIR)/%,$(AS_OBJ))
 
 ## C OBJECTS
 C_OBJ=gdt.o heap.o idt.o kernel.o keyboard.o keymap.o stdio.o string.o tty.o vga.o irq_handler.o stack_protector.o timer.o paging.o
-
 export C_OBJECTS=$(patsubst %,$(C_OBJECT_DIR)/%,$(C_OBJ))
 
 ## ALL OBJECTS IN ORDER
-OBJ=$(CRTI_OBJECT) $(CRTBEGIN_OBJECT) $(AS_OBJECT) $(C_OBJECTS) $(CRTEND_OBJECT) $(CRTN_OBJECT)
+OBJ=$(GCC_USR_DIR)crti.o $(GCC_USR_DIR)crtbegin.o $(AS_OBJECTS) $(C_OBJECTS) $(GCC_USR_DIR)crtend.o $(GCC_USR_DIR)crtn.o
 
 
 

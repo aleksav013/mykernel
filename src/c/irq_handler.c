@@ -2,16 +2,6 @@
 #include<source/stdio.h>
 #include<asm.h>
 
-#define INTERRUPT_GATE_32 0x8e
-
-#define KERNEL_CODE 0x08
-#define KERNEL_DATA 0x10
-
-#define PIC1_COMMAND_PORT 0x20
-#define PIC1_DATA_PORT 0x21
-#define PIC2_COMMAND_PORT 0xA0
-#define PIC2_DATA_PORT 0xA1
-
 void irq0_handler(void)
 {
     ioport_out(PIC1_COMMAND_PORT, 0x20);

@@ -3,7 +3,6 @@
 #include<source/irq.h>
 #include<asm.h>
 
-
 extern void load_idt(struct idt_pointer *idtp);
 
 struct idt_entry idt[256];

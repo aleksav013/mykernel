@@ -2,37 +2,19 @@
 #include<types.h>
 #include<asm.h>
 #include<source/stdio.h>
+#include<source/keymap.h>
+#include<source/vga.h>
+#include<source/tty.h>
 
-#define BUFFER_SIZE 200
-#define BUFFER_LOG 200
 char buffer[BUFFER_LOG][BUFFER_SIZE];
 size_t buffer_size[BUFFER_LOG];
 size_t buffer_current=0;
 size_t buffer_all=0;
 size_t buffer_index=0;
 
-#define PIC1_COMMAND_PORT 0x20
-#define PIC1_DATA_PORT 0x21
-#define PIC2_COMMAND_PORT 0xA0
-#define PIC2_DATA_PORT 0xA1
-// IO Ports for Keyboard
-#define KEYBOARD_DATA_PORT 0x60
-#define KEYBOARD_STATUS_PORT 0x64
-
-void previous_field(void);
-void tty(char *buffer);
-void prompt(void);
-void clear(void);
-void us_en(char keymap[]);
-void us_en_shift(char keymap[]);
-
 char charcode[256];
 char shift_charcode[256];
 bool ispressed[128];
-#define lshift 0x2A
-#define rshift 0x36
-#define lctrl 0x1D
-#define rctrl 0x1D
 
 void init_keyboard()
 {
