@@ -8,7 +8,8 @@ extern void load_idt(struct idt_pointer *idtp);
 struct idt_entry idt[256];
 struct idt_pointer idtp;
 
-void init_idt_entry(size_t num, uint32_t offset, uint16_t selector, uint8_t type_attr)
+void init_idt_entry(size_t num, uint32_t offset, uint16_t selector, uint8_t
+        type_attr)
 {
     idt[num].offset1=(uint16_t)(offset & 0xffff);
     idt[num].selector=selector;

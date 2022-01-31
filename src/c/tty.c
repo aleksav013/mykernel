@@ -9,7 +9,8 @@ extern uint32_t time;
 
 size_t pieces(char pieces[][CMD_LENGTH],char *buffer)
 {
-    for(size_t x=0;x<CMD_LENGTH;x++) for(size_t y=0;y<CMD_LENGTH;y++) pieces[x][y]='\0';
+    for(size_t x=0;x<CMD_LENGTH;x++) for(size_t y=0;y<CMD_LENGTH;y++)
+        pieces[x][y]='\0';
 
     size_t i=0,j=0,r=0;
     while(buffer[i]==' '&&buffer[i]!='\0') i++;

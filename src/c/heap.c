@@ -6,7 +6,8 @@ void k_heapBMInit(KHEAPBM *heap)
     heap->fblock = 0;
 }
 
-int k_heapBMAddBlock(KHEAPBM *heap, uintptr_t addr, uint32_t size, uint32_t bsize)
+int k_heapBMAddBlock(KHEAPBM *heap, uintptr_t addr, uint32_t size, uint32_t
+        bsize)
 {
     KHEAPBLOCKBM        *b;
     uint32_t            bcnt;
@@ -64,7 +65,8 @@ void *k_heapBMAlloc(KHEAPBM *heap, uint32_t size)
         {
 
             bcnt = b->size / b->bsize;
-            bneed = (size / b->bsize) * b->bsize < size ? size / b->bsize + 1 : size / b->bsize;
+            bneed = (size / b->bsize) * b->bsize < size ? size / b->bsize + 1 :
+                size / b->bsize;
             bm = (uint8_t*)&b[1];
 
             for (x = (b->lfb + 1 >= bcnt ? 0 : b->lfb + 1); x != b->lfb; ++x)
@@ -75,7 +77,8 @@ void *k_heapBMAlloc(KHEAPBM *heap, uint32_t size)
                 if (bm[x] == 0)
                 {
                     /* count free blocks */
-                    for (y = 0; bm[x + y] == 0 && y < bneed && (x + y) < bcnt; ++y);
+                    for (y = 0; bm[x + y] == 0 && y < bneed && (x + y) < bcnt;
+                            ++y);
 
                     /* we have enough, now allocate them */
                     if (y == bneed)
@@ -95,7 +98,8 @@ void *k_heapBMAlloc(KHEAPBM *heap, uint32_t size)
                         return (void*)(x * b->bsize + (uintptr_t)&b[1]);
                     }
 
-                    /* x will be incremented by one ONCE more in our FOR loop */
+                    /* x will be incremented by one ONCE more in our FOR loop
+                     * */
                     x += (y - 1);
                     continue;
                 }
@@ -116,9 +120,11 @@ void k_heapBMFree(KHEAPBM *heap, void *ptr)
 
     for (b = heap->fblock; b; b = b->next)
     {
-        if ((uintptr_t)ptr > (uintptr_t)b && (uintptr_t)ptr < (uintptr_t)b + sizeof(KHEAPBLOCKBM) + b->size) {
+        if ((uintptr_t)ptr > (uintptr_t)b && (uintptr_t)ptr < (uintptr_t)b +
+                sizeof(KHEAPBLOCKBM) + b->size) {
             /* found block */
-            ptroff = (uintptr_t)ptr - (uintptr_t)&b[1];  /* get offset to get block */
+            ptroff = (uintptr_t)ptr - (uintptr_t)&b[1];  /* get offset to get
+                                                            block */
             /* block offset in BM */
             bi = ptroff / b->bsize;
             /* .. */
