@@ -70,15 +70,15 @@ void uptime(void)
 
 void prompt(void)
 {
-    //printf("[user@myos]$ ");
+    //printf("[aleksa@aleksa-os]$ ");
     set_color(VGA_COLOR_RED,VGA_COLOR_BLACK);
     printf("[");
     set_color(VGA_COLOR_YELLOW,VGA_COLOR_BLACK);
-    printf("user");
+    printf("aleksa");
     set_color(VGA_COLOR_GREEN,VGA_COLOR_BLACK);
     printf("@");
     set_color(VGA_COLOR_BLUE,VGA_COLOR_BLACK);
-    printf("myos");
+    printf("aleksa-os");
     set_color(VGA_COLOR_RED,VGA_COLOR_BLACK);
     printf("]");
     set_color(VGA_COLOR_LIGHT_GREY,VGA_COLOR_BLACK);

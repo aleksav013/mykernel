@@ -39,7 +39,7 @@ GCC_USR_DIR=$(shell $(CC) -print-file-name=)
 
 
 # TARGET
-TARGET=myos
+TARGET=aleksa-os
 BINARY=$(BUILD_DIR)/$(TARGET).bin
 ISO=$(TARGET).iso
 
@@ -66,8 +66,11 @@ GRUB.CFG=$(SOURCE_DIR)/grub.cfg
 
 
 # RULES
-.PHONY: all compile run run-iso clean install_headers
+.PHONY: all clean compile install_headers iso run run-iso
 all: compile
+
+clean:
+	$(RM) $(BUILD_DIR) $(ISO_DIR) $(ISO)
 
 $(BINARY): $(OBJ)
 	$(CC) -T $(LINKER) -o $(BINARY) $(CFLAGS) -nostdlib -lgcc $(OBJ)
@@ -80,19 +83,22 @@ compile:
 	@$(MAKE) --directory $(SOURCE_DIR)
 	$(MAKE) $(BINARY)
 
-$(ISO): $(BINARY)
-	grub-file --is-x86-multiboot $(BINARY)
+$(ISO): $(OBJ) $(GRUB.CFG)
+ifeq ($(shell ./scripts/is_multiboot.sh), 0)
 	$(MKDIR) $(ISO_DIR)/boot/grub
 	$(CP) $(BINARY) $(ISO_DIR)/boot/$(TARGET).bin
 	$(CP) $(GRUB.CFG) $(ISO_DIR)/boot/grub/grub.cfg
 	grub-mkrescue -o $(ISO) $(ISO_DIR)
+else
+	@echo "$(BINARY) is not x86 multiboot compatible"
+	$(RM) $(BINARY)
+endif
+
+iso: compile
+	$(MAKE) $(ISO)
 
 run: compile
 	$(QEMU) -kernel $(BINARY) $(QEMU_DEBUG)
 
-run-iso: compile
-	$(MAKE) $(ISO)
+run-iso: iso
 	$(QEMU) -cdrom $(ISO)
-
-clean:
-	$(RM) $(BUILD_DIR) $(ISO_DIR) $(ISO)
