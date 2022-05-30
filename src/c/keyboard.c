@@ -150,6 +150,7 @@ void keyboard_handler()
                         {
                             c=shift_charcode[keycode];
                         }
+
                         if(buffer_index<BUFFER_SIZE)
                         {
                             buffer[buffer_current][buffer_index++]=c;

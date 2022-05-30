@@ -18,7 +18,9 @@ export CFLAGS=-std=gnu99 -O3 $(WARNINGS) -ffreestanding -fstack-protector-all
 export MKDIR=mkdir -p
 export RM=rm -rf
 export CP=cp -r
-QEMU=qemu-system-i386
+QEMU=qemu-system-x86_64
+QEMU_FLAGS=-enable-kvm
+QEMU_DEBUG=
 
 
 
@@ -98,7 +100,7 @@ iso: compile
 	$(MAKE) $(ISO)
 
 run: compile
-	$(QEMU) -kernel $(BINARY) $(QEMU_DEBUG)
+	$(QEMU) $(QEMU_FLAGS) -kernel $(BINARY) $(QEMU_DEBUG)
 
 run-iso: iso
-	$(QEMU) -cdrom $(ISO)
+	$(QEMU) $(QEMU_FLAGS) -cdrom $(ISO)

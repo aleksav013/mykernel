@@ -129,6 +129,7 @@ void k_heapBMFree(KHEAPBM *heap, void *ptr)
             bi = ptroff / b->bsize;
             /* .. */
             bm = (uint8_t*)&b[1];
+
             /* clear allocation */
             id = bm[bi];
             /* oddly.. GCC did not optimize this */
