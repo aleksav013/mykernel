@@ -3,9 +3,9 @@
 #include<source/string.h>
 #include<source/stdio.h>
 #include<source/vga.h>
-
-
-extern uint32_t time;
+#include<source/shell/uptime.h>
+#include<source/shell/neofetch.h>
+#include<source/shell/game.h>
 
 size_t pieces(char pieces[][CMD_LENGTH],char *buffer)
 {
@@ -63,10 +63,6 @@ void number(size_t numberof,char parts[][CMD_LENGTH])
     }
 }
 
-void uptime(void)
-{
-    printf("System uptime is: %d seconds\n",time);
-}
 
 void prompt(void)
 {
@@ -85,46 +81,14 @@ void prompt(void)
     printf("$ ");
 }
 
-void neofetch(void)
-{
-    set_color(VGA_COLOR_WHITE,VGA_COLOR_BLACK);
-    printf("      .                ");         printf("Dobrodosli u moj     \n");
-    printf("     J:L    (\"\"\")      ");      printf("operativni sistem :) \n");
-    printf("     |:|     III       ");         printf("Uzivajte!            \n");
-    printf("     |:|     III       ");         printf("                     \n");
-    printf("     |:|     III       ");         printf("Welcome to my        \n");
-    printf("     |:|   __III__     ");         printf("operating system :)  \n");
-    printf("     |:| /:-.___,-:\\   ");        printf("Enjoy your stay!     \n");
-    printf("     |:| \\]  |:|  [/   ");        printf("                     \n");
-    printf("     |:|     |:|       ");         printf("                     \n");
-    printf("     |:|     |:|       ");         printf("                     \n");
-    printf("     |:|     |:|       ");         printf("                     \n");
-    printf(" /]  |:|  [\\ |:|       ");        printf("                     \n");
-    printf(" \\:-'\"\"\"`-:/ |:|       ");     printf("                     \n");
-    printf("   \"\"III\"\"   |:|       ");     printf("                     \n");
-    printf("     III     |:|       ");         printf("                     \n");
-    printf("     III     |:|       ");         printf("                     \n");
-    printf("     III     |:|       ");         printf("napravio/made by:    \n");
-    printf("    (___)    J:F       ");         printf("Aleksa Vuckovic      \n");
-    printf("              \"        ");        printf("                     \n");
-
-    for(size_t i=0;i<16;i++)
-    {
-        set_color(0,i);
-        printf("  ",i);
-    }
-    printf("\n");
-
-
-    set_color(VGA_COLOR_LIGHT_GREY,VGA_COLOR_BLACK);
-    uptime();
-}
-
 void help(void)
 {
     printf("Currently available commands:\n");
-    printf("clear echo merge ls number uptime neofetch help\n");
+    printf("clear echo game merge ls number uptime neofetch help\n");
 }
+
+extern uint8_t process_id;
+extern uint16_t* terminal_buffer;
 
 void tty(char *buffer)
 {
@@ -139,5 +103,8 @@ void tty(char *buffer)
     else if(stringcmp(parts[0],"uptime")) uptime();
     else if(stringcmp(parts[0],"neofetch")) neofetch();
     else if(stringcmp(parts[0],"help")) help();
+    else if(stringcmp(parts[0],"game")) game_init();
     else printf("command not found: %s\n",parts[0]);
+
+    if (!stringcmp(parts[0],"game")) prompt();
 }

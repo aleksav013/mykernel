@@ -2,11 +2,14 @@
 #include<types.h>
 #include<asm.h>
 #include<source/stdio.h>
+#include<source/tty.h>
+#include<source/shell/game.h>
 
 uint32_t tick=0;
-const uint32_t TICKS_PER_SECOND=50;
 extern uint32_t time;
 uint32_t time=0;
+
+extern uint8_t process_id;
 
 void timer_handler(void)
 {
@@ -18,7 +21,9 @@ void timer_handler(void)
     }
 
     ioport_out(0x20, 0x20);
-    ioport_out(0xa0,0x20);
+    ioport_out(0xa0, 0x20);
+
+    if (process_id == PROCESS_GAME_ID) game_timer_handler();
 }
 
 void init_timer(uint32_t frequency)

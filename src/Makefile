@@ -8,4 +8,5 @@ build_as:
 
 build_c:
 	$(MKDIR) $(C_OBJECT_DIR)
+	$(MKDIR) $(C_OBJECT_DIR)/shell
 	@$(MAKE) --directory c

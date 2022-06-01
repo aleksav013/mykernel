@@ -5,6 +5,7 @@
 #include<source/keymap.h>
 #include<source/vga.h>
 #include<source/tty.h>
+#include<source/shell/game.h>
 
 char buffer[BUFFER_LOG][BUFFER_SIZE];
 size_t buffer_size[BUFFER_LOG];
@@ -53,7 +54,6 @@ void enter()
         }
         buffer_index=0;
     }
-    prompt();
     return;
 }
 
@@ -95,14 +95,8 @@ void keyright()
 {
 }
 
-void keyboard_handler()
+void tty_keyboard_handler(uint16_t keycode)
 {
-    ioport_out(PIC1_COMMAND_PORT, 0x20);
-    uint8_t status = ioport_in(KEYBOARD_STATUS_PORT);
-
-    if (status & 0x1)
-    {
-        uint8_t keycode = ioport_in(KEYBOARD_DATA_PORT);
         if(keycode<0x80)
         {
             char c=charcode[keycode];
@@ -165,5 +159,22 @@ void keyboard_handler()
         {
             ispressed[keycode-0x80]=0;
         }
+
+}
+
+extern uint8_t process_id;
+uint8_t process_id = PROCESS_TTY_ID;
+
+void keyboard_handler()
+{
+    ioport_out(PIC1_COMMAND_PORT, 0x20);
+    uint8_t status = ioport_in(KEYBOARD_STATUS_PORT);
+
+    if (status & 0x1)
+    {
+        uint8_t keycode = ioport_in(KEYBOARD_DATA_PORT);
+        if (process_id == PROCESS_TTY_ID) tty_keyboard_handler(keycode);
+        else if (process_id == PROCESS_GAME_ID) game_keyboard_handler(keycode);
+        else printf("Keyboard is not bound to any process\n");
     }
 }
