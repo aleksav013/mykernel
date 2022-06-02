@@ -3,6 +3,7 @@
 #include<source/vga.h>
 #include<source/stdio.h>
 #include<source/timer.h>
+#include<source/cpuid.h>
 
 void neofetch(void)
 {
@@ -34,7 +35,16 @@ void neofetch(void)
     }
     printf("\n");
 
-
     set_color(VGA_COLOR_LIGHT_GREY,VGA_COLOR_BLACK);
+
+    uint8_t cpuid_vendor_string[12];
+    cpuid_vendor(cpuid_vendor_string);
+
+    for (int i = 0; i < 12; i++)
+    {
+        printf("%c", cpuid_vendor_string[i]);
+    }
+    printf("\n");
+
     uptime();
 }

@@ -7,7 +7,6 @@
 #include<source/vga.h>
 #include<source/tty.h>
 
-
 void kernel_main(void)
 {
     set_paging();

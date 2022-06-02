@@ -50,11 +50,13 @@ ISO=$(TARGET).iso
 # OBJECTS
 
 ## AS OBJECTS
-AS_OBJ=boot.o ioport.o gdt.o idt.o irq.o paging.o
+AS_OBJ=boot.o ioport.o gdt.o idt.o irq.o paging.o cpuid.o
 export AS_OBJECTS=$(patsubst %,$(AS_OBJECT_DIR)/%,$(AS_OBJ))
 
 ## C OBJECTS
-C_OBJ=gdt.o heap.o idt.o kernel.o keyboard.o keymap.o stdio.o string.o tty.o vga.o irq_handler.o stack_protector.o timer.o paging.o shell/uptime.o shell/neofetch.o shell/game.o
+C_OBJ=gdt.o heap.o idt.o kernel.o keyboard.o keymap.o stdio.o string.o tty.o \
+vga.o irq_handler.o stack_protector.o timer.o paging.o shell/uptime.o \
+shell/neofetch.o shell/game.o
 export C_OBJECTS=$(patsubst %,$(C_OBJECT_DIR)/%,$(C_OBJ))
 
 ## ALL OBJECTS IN ORDER
