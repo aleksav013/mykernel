@@ -3,9 +3,9 @@
 cpuid_vendor:
     pushl %ebp
     mov %esp, %ebp
-    pushl %ebx
     pushl %edi
     pushl %esi
+    pushl %ebx
 
     mov $0x0, %eax
     cpuid
@@ -16,8 +16,8 @@ cpuid_vendor:
     movl %edx, 4(%eax)
     movl %ecx, 8(%eax)
 
+    popl %ebx
     popl %esi
     popl %edi
-    popl %ebx
     popl %ebp
     ret

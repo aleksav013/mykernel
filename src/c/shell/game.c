@@ -83,7 +83,7 @@ void game_timer_handler()
                 else y=VGA_HEIGHT-1;
                 break;
             case 2:
-                if(y<VGA_HEIGHT) y++;
+                if(y<VGA_HEIGHT-1) y++;
                 else y=0;
                 break;
             case 3:
@@ -91,7 +91,7 @@ void game_timer_handler()
                 else x=VGA_WIDTH-1;
                 break;
             case 4:
-                if(x<VGA_WIDTH) x++;
+                if(x<VGA_WIDTH-1) x++;
                 else x=0;
                 break;
             default:

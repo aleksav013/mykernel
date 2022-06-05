@@ -104,6 +104,7 @@ void tty(char *buffer)
     else if(stringcmp(parts[0],"neofetch")) neofetch();
     else if(stringcmp(parts[0],"help")) help();
     else if(stringcmp(parts[0],"game")) game_init();
+    else if(stringcmp(parts[0],"")) ;
     else printf("command not found: %s\n",parts[0]);
 
     if (!stringcmp(parts[0],"game")) prompt();

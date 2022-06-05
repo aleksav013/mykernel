@@ -4,5 +4,6 @@
 #include<types.h>
 
 void game_keyboard_handler(uint16_t keycode);
+void game_timer_handler(void);
 
 #endif

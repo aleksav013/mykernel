@@ -9,7 +9,7 @@ void neofetch(void)
 {
     set_color(VGA_COLOR_WHITE,VGA_COLOR_BLACK);
     printf("      .                ");         printf("Dobrodosli u moj     \n");
-    printf("     J:L    (\"\"\")      ");      printf("operativni sistem :) \n");
+    printf("     A:A    (\"\"\")      ");      printf("operativni sistem :) \n");
     printf("     |:|     III       ");         printf("Uzivajte!            \n");
     printf("     |:|     III       ");         printf("                     \n");
     printf("     |:|     III       ");         printf("Welcome to my        \n");
@@ -25,7 +25,7 @@ void neofetch(void)
     printf("     III     |:|       ");         printf("                     \n");
     printf("     III     |:|       ");         printf("                     \n");
     printf("     III     |:|       ");         printf("napravio/made by:    \n");
-    printf("    (___)    J:F       ");         printf("Aleksa Vuckovic      \n");
+    printf("    (___)    V:V       ");         printf("Aleksa Vuckovic      \n");
     printf("              \"        ");        printf("                     \n");
 
     for(size_t i=0;i<16;i++)

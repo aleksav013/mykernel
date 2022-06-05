@@ -54,6 +54,7 @@ void enter()
         }
         buffer_index=0;
     }
+    else prompt();
     return;
 }
 
