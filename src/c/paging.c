@@ -3,6 +3,7 @@
 
 extern void loadPageDirectory(uint32_t*);
 extern void enablePaging(void);
+extern void flushPaging(void);
 
 uint32_t page_directory[1024] __attribute__((aligned(4096)));
 
@@ -23,11 +24,6 @@ uint32_t page_table[1024][1024] __attribute__((aligned(4096)));
 
 void set_pt(size_t num,uint32_t address)
 {
-    // holds the physical address where we want to start mapping these pages
-    // to.
-    // in this case, we want to map these pages to the very beginning of
-    // memory.
-
     //we will fill all 1024 entries in the table, mapping 4 megabytes
     for(size_t i=0;i<1024;i++)
     {
@@ -37,14 +33,26 @@ void set_pt(size_t num,uint32_t address)
         // attributes: supervisor level, read/write, present.
     }
 
-    page_directory[num] = ((uint32_t)page_table[num]) | 3;
+    page_directory[num] = ((uint32_t)page_table[num] - 0xC0000000) | 3;
     // attributes: supervisor level, read/write, present
+}
+
+void empty_pt(size_t num)
+{
+    for(size_t i=0;i<1024;i++)
+    {
+        page_table[num][i] = 0;
+    }
+
+    page_directory[num] = 0x00000002;
 }
 
 void set_paging(void)
 {
     set_pd();
-    for(size_t i=0;i<1024;i++) set_pt(i,0x00400000 * i); // all 4GB mapped
+    set_pt(768,0x00000000); // maps 0x00000000 to 0xC0000000
+    set_pt(769,0x00400000); // maps 0x00400000 to 0xC0400000
+    set_pt(832,0x000B8000); // maps 0x000B8000 to 0xD0000000
     loadPageDirectory(page_directory);
-    enablePaging();
+    flushPaging();
 }

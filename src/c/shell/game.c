@@ -56,8 +56,8 @@ void game_keyboard_handler(uint16_t keycode)
 
 void game_init(void)
 {
-    x=VGA_WIDTH/2;
-    y=VGA_HEIGHT/2;
+    x=(uint16_t)VGA_WIDTH/2;
+    y=(uint16_t)VGA_HEIGHT/2;
     game_time=0;
     game_tick=0;
     duzina=1;
@@ -80,7 +80,7 @@ void game_timer_handler()
         {
             case 1:
                 if(y>0) y--;
-                else y=VGA_HEIGHT-1;
+                else y=(uint16_t)VGA_HEIGHT-1;
                 break;
             case 2:
                 if(y<VGA_HEIGHT-1) y++;
@@ -88,7 +88,7 @@ void game_timer_handler()
                 break;
             case 3:
                 if(x>0) x--;
-                else x=VGA_WIDTH-1;
+                else x=(uint16_t)VGA_WIDTH-1;
                 break;
             case 4:
                 if(x<VGA_WIDTH-1) x++;

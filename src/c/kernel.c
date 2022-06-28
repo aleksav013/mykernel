@@ -14,7 +14,7 @@ void kernel_main(void)
     init_timer(50);
     init_keyboard();
     kheapinit();
-    kheapaddblock(0x00200000, 0x00100000, 16);
+    kheapaddblock(0xC0700000, 0x00100000, 16);
 
     terminal_initialize();
     prompt();
