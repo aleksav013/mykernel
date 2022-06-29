@@ -6,6 +6,7 @@
 #include<source/heap.h>
 #include<source/vga.h>
 #include<source/tty.h>
+#include<source/cursor.h>
 
 void kernel_main(void)
 {
@@ -18,6 +19,7 @@ void kernel_main(void)
 
     terminal_initialize();
     prompt();
+    disable_cursor();
 
     while(1) __asm__("hlt\n\t");
 }

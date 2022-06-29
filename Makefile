@@ -56,7 +56,7 @@ export AS_OBJECTS=$(patsubst %,$(AS_OBJECT_DIR)/%,$(AS_OBJ))
 ## C OBJECTS
 C_OBJ=gdt.o heap.o idt.o kernel.o keyboard.o keymap.o stdio.o string.o tty.o \
 vga.o irq_handler.o stack_protector.o timer.o paging.o shell/uptime.o \
-shell/neofetch.o shell/game.o
+shell/neofetch.o shell/game.o cursor.o
 export C_OBJECTS=$(patsubst %,$(C_OBJECT_DIR)/%,$(C_OBJ))
 
 ## ALL OBJECTS IN ORDER

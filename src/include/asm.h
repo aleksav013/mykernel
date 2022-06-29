@@ -9,8 +9,8 @@
 #define PIC2_DATA_PORT 0xA1
 
 
-extern uint8_t ioport_in(uint8_t port);
-extern void ioport_out(uint8_t port, int data);
+extern uint8_t ioport_in(uint32_t port);
+extern void ioport_out(uint32_t port, uint32_t data);
 
 
 #endif
